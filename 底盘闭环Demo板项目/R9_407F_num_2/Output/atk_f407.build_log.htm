@@ -27,6 +27,30 @@ Project File Date:  11/04/2024
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'R9_407F_num2'
+compiling pid.c...
+..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\..\Drivers\CMSIS\Include\core_cm4.h(80): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\..\Drivers\BSP\PID\pid.c(107): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\Drivers\BSP\PID\pid.c: 3 warnings, 0 errors
+compiling task.c...
+..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\..\Drivers\CMSIS\Include\core_cm4.h(80): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
+  } MLX90393Data;
+..\..\Drivers\BSP\task.c: 3 warnings, 0 errors
+compiling API_Schedule.c...
+..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\..\Drivers\CMSIS\Include\core_cm4.h(80): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
+  } MLX90393Data;
+..\..\Drivers\BSP\API_Schedule.c: 3 warnings, 0 errors
 compiling btim.c...
 ..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
   #define __FPU_PRESENT             1U       /*!< FPU present                                   */
@@ -34,39 +58,101 @@ compiling btim.c...
         #define __FPU_USED       1U
 ..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
   } MLX90393Data;
-..\..\Drivers\BSP\TIMER\btim.c(109): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          if (gl_motor_data.volatage>0.1)
-..\..\Drivers\BSP\TIMER\btim.c(116): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\..\Drivers\BSP\TIMER\btim.c(118): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA)
+..\..\Drivers\BSP\TIMER\btim.c(124): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gl_motor_data.speed = (fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
+..\..\Drivers\BSP\TIMER\btim.c(131): warning:  #1035-D: single-precision operand implicitly converted to double-precision
               if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
-..\..\Drivers\BSP\TIMER\btim.c(122): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                  tempv = (fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
-..\..\Drivers\BSP\TIMER\btim.c(132): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-              if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
-..\..\Drivers\BSP\TIMER\btim.c(138): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                  tempv = -(fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
-..\..\Drivers\BSP\TIMER\btim.c(155): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          if (gr_motor_data.volatage>0.1)
+..\..\Drivers\BSP\TIMER\btim.c(137): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gl_motor_data.speed = -(fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
 ..\..\Drivers\BSP\TIMER\btim.c(162): warning:  #1035-D: single-precision operand implicitly converted to double-precision
               if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA )
 ..\..\Drivers\BSP\TIMER\btim.c(168): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                  temprv = (fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
-..\..\Drivers\BSP\TIMER\btim.c(179): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gr_motor_data.speed = (fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
+..\..\Drivers\BSP\TIMER\btim.c(176): warning:  #1035-D: single-precision operand implicitly converted to double-precision
               if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA )
-..\..\Drivers\BSP\TIMER\btim.c(185): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                  temprv = -(fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
-..\..\Drivers\BSP\TIMER\btim.c(216): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\..\Drivers\BSP\TIMER\btim.c(182): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gr_motor_data.speed = -(fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
+..\..\Drivers\BSP\TIMER\btim.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gl_motor_data.pwm =  gl_motor_data.pwm*0.5;    
+..\..\Drivers\BSP\TIMER\btim.c(223): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  gr_motor_data.pwm =  gr_motor_data.pwm*0.5;    
+..\..\Drivers\BSP\TIMER\btim.c(237): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           gl_motor_data.theory_pwm  =fabs(Struc_ActuPra_Out.L_Velocity *0.083);
-..\..\Drivers\BSP\TIMER\btim.c(217): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\..\Drivers\BSP\TIMER\btim.c(238): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           gr_motor_data.theory_pwm = fabs(Struc_ActuPra_Out.R_Velocity *0.083);
-..\..\Drivers\BSP\TIMER\btim.c(91): warning:  #177-D: variable "tempI"  was declared but never referenced
-      float tempI;
-..\..\Drivers\BSP\TIMER\btim.c(93): warning:  #177-D: variable "temprI"  was declared but never referenced
-      float temprI;
-..\..\Drivers\BSP\TIMER\btim.c: 17 warnings, 0 errors
+..\..\Drivers\BSP\TIMER\btim.c(99): warning:  #177-D: variable "pid_t"  was declared but never referenced
+         static uint8_t pid_t;       
+..\..\Drivers\BSP\TIMER\btim.c: 16 warnings, 0 errors
+compiling WheelSpeedMap.c...
+..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\..\Drivers\CMSIS\Include\core_cm4.h(80): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
+  } MLX90393Data;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(50): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if ((Struc_ActuPra_Out.steering_angle>=0.0 && Struc_ActuPra_Out.steering_angle<(pi-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))||
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(50): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if ((Struc_ActuPra_Out.steering_angle>=0.0 && Struc_ActuPra_Out.steering_angle<(pi-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))||
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(51): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	(Struc_ActuPra_Out.steering_angle>=(2.0*pi-Struc_ActuPra_Int.Steering_Angle/180.0 *pi) && Struc_ActuPra_Out.steering_angle<=2*pi))
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(53): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Struc_ActuPra_Out.L_Velocity = velPlanIn.k_forwardpra *velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA  * \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(54): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		(sin(Struc_ActuPra_Out.steering_angle-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi)) + \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(55): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		cos(Struc_ActuPra_Out.steering_angle-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))) /Struc_ActuPra_Int.K_revise ;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(59): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Struc_ActuPra_Out.L_Velocity = velPlanIn.k_backpra *velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA  * \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(60): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		(sin(Struc_ActuPra_Out.steering_angle-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi)) + \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(61): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		cos(Struc_ActuPra_Out.steering_angle-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))) /Struc_ActuPra_Int.K_revise ;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(64): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      if((Struc_ActuPra_Out.steering_angle>=0 && Struc_ActuPra_Out.steering_angle<=Struc_ActuPra_Int.Steering_Angle/180.0 *pi)|| \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(65): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	(Struc_ActuPra_Out.steering_angle>=pi+Struc_ActuPra_Int.Steering_Angle/180.0 *pi && Struc_ActuPra_Out.steering_angle<=2.0 *pi) )
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(67): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Struc_ActuPra_Out.R_Velocity = velPlanIn.k_backpra*velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA * \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(68): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		(sin(Struc_ActuPra_Out.steering_angle+(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi)) - \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(69): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		cos(Struc_ActuPra_Out.steering_angle+(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))) /Struc_ActuPra_Int.K_revise ;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(73): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Struc_ActuPra_Out.R_Velocity = velPlanIn.k_forwardpra*velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA * \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(74): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		(sin(Struc_ActuPra_Out.steering_angle+(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi)) - \
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(75): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		cos(Struc_ActuPra_Out.steering_angle+(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))) /Struc_ActuPra_Int.K_revise;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(144): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Struc_ActuPra_Int.K_revise = sin(0.5*pi-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(145): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	+cos(0.5*pi-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi));
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(148): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if(Struc_ActuPra_Int.set_Maximum_Strspeed ==1.0 )
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(180): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(26): warning:  #177-D: variable "pitch"  was declared but never referenced
+  static float pitch,roll,yaw;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(26): warning:  #177-D: variable "roll"  was declared but never referenced
+  static float pitch,roll,yaw;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(26): warning:  #177-D: variable "yaw"  was declared but never referenced
+  static float pitch,roll,yaw;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c: 27 warnings, 0 errors
+compiling main.c...
+..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h(52): warning:  #47-D: incompatible redefinition of macro "__FPU_PRESENT" 
+  #define __FPU_PRESENT             1U       /*!< FPU present                                   */
+..\..\Drivers\CMSIS\Include\core_cm4.h(80): warning:  #47-D: incompatible redefinition of macro "__FPU_USED" 
+        #define __FPU_USED       1U
+..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
+  } MLX90393Data;
+..\..\User\main.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=29388 RO-data=1044 RW-data=192 ZI-data=24600  
+Program Size: Code=30124 RO-data=1044 RW-data=200 ZI-data=24816  
 FromELF: creating hex file...
-"..\..\Output\atk_f407.axf" - 0 Error(s), 17 Warning(s).
+"..\..\Output\atk_f407.axf" - 0 Error(s), 55 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -79,7 +165,7 @@ Package Vendor: Keil
   C:/Users/fu/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.17.1/Drivers/CMSIS/Device/ST/STM32F4xx/Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

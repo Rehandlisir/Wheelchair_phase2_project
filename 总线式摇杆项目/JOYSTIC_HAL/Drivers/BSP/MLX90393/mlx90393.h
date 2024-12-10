@@ -109,6 +109,7 @@ typedef  struct
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
+	uint8_t mlxcaculate_end;
 	
 } MLX90393Data;
 
@@ -155,5 +156,5 @@ int32_t filterValue_int32(AverageFilter *filter, int16_t input);
 void mlx_90393_offsetcacu(void);
 void mlx_90393_offset(void);
 int32_t Value_Resetzero(int32_t min_value, int32_t current_value, int32_t max_value);
-
+void filter_init(void);
 #endif

@@ -33,6 +33,7 @@ void Hard_devInit(void)
 	can_init(CAN_SJW_1TQ, CAN_BS2_6TQ, CAN_BS1_7TQ, 6, CAN_MODE_NORMAL);  /* CAN初始化, 正常模式, 波特率500Kbps */
 	iwdg_init(IWDG_PRESCALER_64, 1500);      /* 预分频数为64,重载值为1500,溢出时间约为3s */
 	filterInit();                    /*初始化滤波器*/
+	lowpass_init();
 	adc3_nch_dma_init();
 	pid_init();
 	// vSetUpMlx90393();
@@ -66,12 +67,14 @@ void Task_UnderpanDrive(void)
 void Task_R9DataScope(void)
 {
 
-	// printf("BSH1_AD_F:%d,BSH2_AD_F:%d,ASH1_AD_F:%d,ASH2_AD_F:%d,\t\n",g_adc_val[1], g_adc_val[2],g_adc_val[7],g_adc_val[8]);
+	// printf("ASH1_AD_F:%d,ASH2_AD_F:%d,\t\n",g_adc_val[7],g_adc_val[8]);
 
 /*闭环采样数据 ：1 左轮规划速度 2 左轮实际速度  3左轮电枢电压  4 左轮电枢电流 
 5 右轮规划速度 6 右轮实际速度  7右轮电枢电压  8 右轮电枢电流  9 左轮占空比  10 右轮占空比*/
 printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
 gr_speed_pid.SetPoint,gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,gl_motor_data.pwm,gr_motor_data.pwm);
+
+// printf("l_c:%f,r_c:%f\t\n",gl_motor_data.current,gr_motor_data.current);
 }
 
 

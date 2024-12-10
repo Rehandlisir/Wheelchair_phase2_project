@@ -38344,6 +38344,7 @@ typedef  struct
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
+	uint8_t mlxcaculate_end;
 	
 } MLX90393Data;
 
@@ -38359,7 +38360,7 @@ extern AverageFilter filter_mlx_ydata;
 
 extern MLX90393Data mlxdata;
 
-# 133 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 134 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 void MLX90393_SDA_OUT(void);
 void MLX90393_SDA_IN(void);
 void MLX90393_IIC_Init(void);                
@@ -38385,7 +38386,7 @@ int32_t filterValue_int32(AverageFilter *filter, int16_t input);
 void mlx_90393_offsetcacu(void);
 void mlx_90393_offset(void);
 int32_t Value_Resetzero(int32_t min_value, int32_t current_value, int32_t max_value);
-
+void filter_init(void);
 # 10 "..\\..\\Drivers\\./BSP/TASK/task.h"
 # 1 "..\\..\\Drivers\\./BSP/WDG/wdg.h"
 
@@ -38529,9 +38530,17 @@ void Hard_devInit(void)
 
 void Task_GetMlx90393(void)
 {
+  if(mlxdata.mlxcaculate_end) 
+	{
+		vInMeasurementNormal();
+		mlx_90393_offset();
+	}
+	else
+	{
+		mlxdata.xdata =0;
+		mlxdata.ydata =0;
+	}
 
-	vInMeasurementNormal();
-	mlx_90393_offset();
 }
 
 
@@ -38540,11 +38549,15 @@ void Task_GetMlx90393(void)
  
 void Task_CanjoysticRun(void)
 {
-	mlx_90393_CAN_Trans(0x02,mlxdata.xdata,mlxdata.ydata);
+	if(mlxdata.mlxcaculate_end) 
+	{
+		mlx_90393_CAN_Trans(0x02,mlxdata.xdata,mlxdata.ydata);
+	}
+	
 }
 void Task_R9DataScope(void)
 {
-   printf("%d,%d\t\n",mlxdata.xdata,mlxdata.ydata);
+
 }
 
 

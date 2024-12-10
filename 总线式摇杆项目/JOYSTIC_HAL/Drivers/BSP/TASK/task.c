@@ -19,9 +19,17 @@ void Hard_devInit(void)
 
 void Task_GetMlx90393(void)
 {
+  if(mlxdata.mlxcaculate_end) // 偏移量计算完成再进行正常输出
+	{
+		vInMeasurementNormal();
+		mlx_90393_offset();
+	}
+	else
+	{
+		mlxdata.xdata =0;
+		mlxdata.ydata =0;
+	}
 
-	vInMeasurementNormal();
-	mlx_90393_offset();
 }
 
 /**
@@ -30,11 +38,15 @@ void Task_GetMlx90393(void)
  */
 void Task_CanjoysticRun(void)
 {
-	mlx_90393_CAN_Trans(0x02,mlxdata.xdata,mlxdata.ydata);
+	if(mlxdata.mlxcaculate_end) // 偏移量计算完成再进行正常输出
+	{
+		mlx_90393_CAN_Trans(0x02,mlxdata.xdata,mlxdata.ydata);
+	}
+	
 }
 void Task_R9DataScope(void)
 {
-   printf("%d,%d\t\n",mlxdata.xdata,mlxdata.ydata);
+//   printf("%d,%d\t\n",mlxdata.xdata,mlxdata.ydata);
 }
 
 

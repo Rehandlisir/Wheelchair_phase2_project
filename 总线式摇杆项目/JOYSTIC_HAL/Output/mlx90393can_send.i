@@ -38313,6 +38313,7 @@ typedef  struct
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
+	uint8_t mlxcaculate_end;
 	
 } MLX90393Data;
 
@@ -38328,7 +38329,7 @@ extern AverageFilter filter_mlx_ydata;
 
 extern MLX90393Data mlxdata;
 
-# 133 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 134 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 void MLX90393_SDA_OUT(void);
 void MLX90393_SDA_IN(void);
 void MLX90393_IIC_Init(void);                
@@ -38354,7 +38355,7 @@ int32_t filterValue_int32(AverageFilter *filter, int16_t input);
 void mlx_90393_offsetcacu(void);
 void mlx_90393_offset(void);
 int32_t Value_Resetzero(int32_t min_value, int32_t current_value, int32_t max_value);
-
+void filter_init(void);
 # 16 "..\\..\\Drivers\\BSP\\MLX90393_CAN\\mlx90393can_send.c"
 
 void mlx_90393_CAN_Trans(uint8_t id,int16_t x,int16_t y)

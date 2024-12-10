@@ -4,7 +4,7 @@
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-11-15 14:08:22
+ * @LastEditTime : 2024-12-09 20:16:50
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "API_Schedule.h"
@@ -16,7 +16,7 @@
 struct TaskStruct TaskST[] =
 	{
 		{0, 1, 0, Task_GetMlx90393},
-		{0, 1, 0, Task_UnderpanDrive},
+		{0, 3, 0, Task_UnderpanDrive},
 		{0, 300, 0, Task_led_control},
 		{0, 1, 0, Task_R9DataScope},
 	};

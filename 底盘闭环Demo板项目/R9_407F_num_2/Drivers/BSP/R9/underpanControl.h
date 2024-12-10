@@ -79,6 +79,7 @@ typedef struct
   float pwm;
   float theory_pwm;
   float battary_v;
+  float test_data;
 } Motor_TypeDef;
 
 typedef struct 

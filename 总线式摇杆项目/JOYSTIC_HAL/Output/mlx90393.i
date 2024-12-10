@@ -37236,6 +37236,7 @@ typedef  struct
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
+	uint8_t mlxcaculate_end;
 	
 } MLX90393Data;
 
@@ -37251,7 +37252,7 @@ extern AverageFilter filter_mlx_ydata;
 
 extern MLX90393Data mlxdata;
 
-# 133 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 134 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 void MLX90393_SDA_OUT(void);
 void MLX90393_SDA_IN(void);
 void MLX90393_IIC_Init(void);                
@@ -37277,7 +37278,7 @@ int32_t filterValue_int32(AverageFilter *filter, int16_t input);
 void mlx_90393_offsetcacu(void);
 void mlx_90393_offset(void);
 int32_t Value_Resetzero(int32_t min_value, int32_t current_value, int32_t max_value);
-
+void filter_init(void);
 # 2 "..\\..\\Drivers\\BSP\\MLX90393\\mlx90393.c"
 # 1 "..\\..\\Drivers\\./SYSTEM/delay/delay.h"
 
@@ -37638,7 +37639,7 @@ void vCmdMlxWriteRegAndWaite(uint16_t RegAddress, unsigned short usWriteData , u
 
 void vSetUpMlx90393(void)
 {
-    
+    filter_init(); 
 
 
     
@@ -37647,6 +37648,7 @@ void vSetUpMlx90393(void)
     mlxdata.ucMlx90393ErroType = 0;
 
     MLX90393_IIC_Init(); 
+		
 
     vCmdMlxAndWaiteErroTimes(0x80, 0x18, 0x03);
 
@@ -37681,11 +37683,15 @@ void vSetUpMlx90393(void)
         }
 		delay_ms(15);
     }
+	
 
 		
-    initializeFilter(&filter_mlx_xdata);
-		initializeFilter(&filter_mlx_ydata);
-		
+}
+void filter_init(void)
+{
+	
+	initializeFilter(&filter_mlx_xdata);
+	initializeFilter(&filter_mlx_ydata);
 }
 
 
@@ -37734,8 +37740,8 @@ void mlx_90393_offset(void)
 	 mlxdata.ydata = mlxdata.ydata - mlxdata.y_offset;
 	
 	   
-    mlxdata.xdata = Value_limit(-3500, Value_Resetzero(-500,  mlxdata.xdata, 500), 3500);
-    mlxdata.ydata = Value_limit(-3500, Value_Resetzero(-500,  mlxdata.ydata, 500), 3500);
+
+
      
     mlxdata.xdata  = filterValue_int32(&filter_mlx_xdata, mlxdata.xdata);
     mlxdata.ydata = filterValue_int32(&filter_mlx_ydata, mlxdata.ydata);
@@ -37748,16 +37754,18 @@ void mlx_90393_offsetcacu(void)
 	
 	uint16_t t;
 	
-	for(t=0;t<250;t++) 
+	for(t=0;t<100;t++) 
 	{ 
 		vInMeasurementNormal();
 		mlxdata.x_offset = mlxdata.xdata; 
 		mlxdata.y_offset = mlxdata.ydata; 
-    mlxdata.xdata= mlxdata.xdata - mlxdata.x_offset;
-    mlxdata.ydata= mlxdata.ydata - mlxdata.y_offset;
-		delay_ms(10);
+
+
+		delay_ms(2);
+		mlxdata.mlxcaculate_end = 0;
 
 	}
+	mlxdata.mlxcaculate_end = 1;
 	
 }
 

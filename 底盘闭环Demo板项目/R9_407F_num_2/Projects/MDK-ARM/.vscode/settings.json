@@ -27,7 +27,8 @@
     "memory": "c",
     "inv_mpu_dmp_motion_driver.h": "c",
     "pid.h": "c",
-    "adc.h": "c"
+    "adc.h": "c",
+    "api_schedule.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "idf.portWin": "COM11",

@@ -4,7 +4,7 @@
  * @Author       : lisir lisir@rehand.com
  * @Version      : 0.0.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-11-14 20:11:47
+ * @LastEditTime : 2024-11-25 11:50:51
  * @2024 by Rehand Medical Technology Co., LTD, All Rights Reserved.
 **/
 
@@ -264,6 +264,9 @@ void Can_joystic_receive(void)
         CanjoysticbufReceive[3]=0;
 
     }
+    /*摇杆数据有效段截取*/
+	mlxdata.xdata = Value_limit(MIN_XDATA, Value_ResetXzero(-XADC_DIM,  mlxdata.xdata, XADC_DIM), MAX_XDATA);
+	mlxdata.ydata = Value_limit(MIN_YDATA, Value_ResetYzero(-YADC_DIM,  mlxdata.ydata, YADC_DIM), MAX_YDATA);
 }
 
 void CanCmdled(uint8_t cmd1,uint8_t cmd2,uint8_t cmd3,uint8_t cmd4,uint8_t cmd5)

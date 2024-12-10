@@ -289,7 +289,7 @@ void vCmdMlxWriteRegAndWaite(uint16_t RegAddress, unsigned short usWriteData , u
 //对90393的上电初始化工作
 void vSetUpMlx90393(void)
 {
-    
+    filter_init(); // 滤波初始化
     #define IfMemoryRecallOkWaiteTime_ms 5//如果不同逻辑操作的命令之间的等待延时
     #define IfReadNextRegWaite_ms        2//每个相同命令之间的时间间隔
     // unsigned char ucReadMlxRegNumIndex = 0;//读取芯片，寄存器计数器
@@ -298,6 +298,7 @@ void vSetUpMlx90393(void)
     mlxdata.ucMlx90393ErroType = 0;//清故 障信息
 
     MLX90393_IIC_Init(); // IIC 初始化
+		
 
     vCmdMlxAndWaiteErroTimes(MLX90393_ExitCommand, MLX90393slaveAdd_011, MlxErro_InCmdExitErro);//让其先退出所有操做
 
@@ -332,11 +333,15 @@ void vSetUpMlx90393(void)
         }
 		delay_ms(15);
     }
+	
 
-		//滤波初始化
-    initializeFilter(&filter_mlx_xdata);
-		initializeFilter(&filter_mlx_ydata);
 		
+}
+void filter_init(void)
+{
+	//滤波初始化
+	initializeFilter(&filter_mlx_xdata);
+	initializeFilter(&filter_mlx_ydata);
 }
 
 
@@ -384,9 +389,7 @@ void mlx_90393_offset(void)
 	
 	 mlxdata.ydata = mlxdata.ydata - mlxdata.y_offset;
 	
-	  /*摇杆数据有效段截取*/
-    mlxdata.xdata = Value_limit(MIN_XDATA, Value_Resetzero(-XADC_DIM,  mlxdata.xdata, XADC_DIM), MAX_XDATA);
-    mlxdata.ydata = Value_limit(MIN_YDATA, Value_Resetzero(-YADC_DIM,  mlxdata.ydata, YADC_DIM), MAX_YDATA);
+
     /*摇杆有效数据段均值滤波滤波*/
     mlxdata.xdata  = filterValue_int32(&filter_mlx_xdata, mlxdata.xdata);
     mlxdata.ydata = filterValue_int32(&filter_mlx_ydata, mlxdata.ydata);
@@ -399,16 +402,18 @@ void mlx_90393_offsetcacu(void)
 	
 	uint16_t t;
 	
-	for(t=0;t<250;t++) 
+	for(t=0;t<100;t++) 
 	{ 
 		vInMeasurementNormal();
 		mlxdata.x_offset = mlxdata.xdata; 
 		mlxdata.y_offset = mlxdata.ydata; 
-    mlxdata.xdata= mlxdata.xdata - mlxdata.x_offset;
-    mlxdata.ydata= mlxdata.ydata - mlxdata.y_offset;
-		delay_ms(10);
+//    mlxdata.xdata= mlxdata.xdata - mlxdata.x_offset;
+//    mlxdata.ydata= mlxdata.ydata - mlxdata.y_offset;
+		delay_ms(2);
+		mlxdata.mlxcaculate_end = 0;
 //		printf("mlxdata.x_offset:%d,mlxdata.y_offset:%d\n",mlxdata.x_offset,mlxdata.y_offset);
 	}
+	mlxdata.mlxcaculate_end = 1;
 	
 }
 

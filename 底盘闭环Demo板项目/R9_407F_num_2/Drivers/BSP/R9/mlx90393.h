@@ -104,7 +104,7 @@ extern MLX90393Data mlxdata;
 #define MIN_XDATA -3500.0
 #define MAX_YDATA 3500.0
 #define MIN_YDATA -3500.0
-#define YADC_DIM 800.0  
+#define YADC_DIM 500.0  
 #define XADC_DIM 800.0  
 
 void MLX90393_IIC_Init(void);                //��ʼ��MLX90393��IO��				 

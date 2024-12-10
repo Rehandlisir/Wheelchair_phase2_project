@@ -87,8 +87,8 @@ void BTIM_TIMX_INT_IRQHandler(void)
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    float tempv;
-    float tempI;
+    float templv;
+    float templI;
     float temprv;
     float temprI;
     if (htim->Instance == BTIM_TIMX_INT)
@@ -96,7 +96,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		OS_IT_RUN();
        /*摇杆can通讯心跳信号清0 操作*/
        static uint8_t joy_t;
-       static uint8_t pid_t;
+       static uint8_t pid_t;       
         joy_t++;
         if (joy_t>200)
         {
@@ -104,128 +104,150 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             joy_t=0;
         }
         /**************************************左路电机 电枢电压、电流、速度采集***************************************************/
-        gl_motor_data.volatage = (g_adc_val[0]-g_adc_val[3])*ADC2VOLATAGE;
-        /*电流采集速度计算*/
-        if (gl_motor_data.volatage>0.1)
+        templv = (g_adc_val[0]-g_adc_val[3])*ADC2VOLATAGE;
+        gl_motor_data.volatage =lowPassFilter(&lowpassl_volatage,templv);//
+        if (fabs(gl_motor_data.volatage)<0.02)
         {
-            gl_motor_data.current = (g_adc_val[2])*ADC2CURRENT+CURRENT_OFFSET-1.5;
-            if (fabs(gl_motor_data.current)<0.5)
+            gl_motor_data.volatage = 0.0 ;
+        }
+        /*电流采集速度计算*/
+        if (gl_motor_data.volatage>0)
+        {
+            templI =  pow(g_adc_val[2],2)*ADC2CURRENT_P1+g_adc_val[2]*ADC2CURRENT_P2+ADC2CURRENT_P3;
+            gl_motor_data.current =lowPassFilter(&lowpassl_current,templI);
+            if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA)
             {
-                gl_motor_data.current = 0.0;
-            }
-            if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
-            {
-                tempv = 0;
+                gl_motor_data.speed = 0;
             }
             else
             {
-                tempv = (fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
+                gl_motor_data.speed = (fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
             }
         }
-        else if (gl_motor_data.volatage <-0.1)
+        else if (gl_motor_data.volatage <0)  
         {
-            gl_motor_data.current = (g_adc_val[1])*ADC2CURRENT+CURRENT_OFFSET-1.5;
-            if (fabs(gl_motor_data.current)<0.5)
-            {
-                gl_motor_data.current = 0.0;
-            }
+            templI = pow(g_adc_val[1],2)*ADC2CURRENT_P1+g_adc_val[1]*ADC2CURRENT_P2+ADC2CURRENT_P3;
+            gl_motor_data.current =lowPassFilter(&lowpassl_current,templI);
             if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
             {
-                tempv = 0;
+                gl_motor_data.speed = 0;
             }
             else
             {
-                tempv = -(fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
+                gl_motor_data.speed = -(fabs(gl_motor_data.volatage) - gl_motor_data.current * MOTER_RA)/MOTER_CE;
             }
         }
         else
         {
             gl_motor_data.volatage = 0;
             gl_motor_data.current = 0;
-            tempv = 0;
+            gl_motor_data.speed = 0;  
 
         }
-        /*左轮速度滤波*/
-        gl_motor_data.speed =tempv;// (float)((gl_motor_data.speed * (float)0.50) + ((float)0.50 * tempv));
+        
 
 //    /**************************************右路电机 电枢电压、电流、速度采集***************************************************/
         /*右路电机 电枢电压、电流、速度采集*/
-        gr_motor_data.volatage = (g_adc_val[10]-g_adc_val[9])*ADC2VOLATAGE;
-        /*电流采集速度计算*/
-        if (gr_motor_data.volatage>0.1)
+        temprv = (g_adc_val[10]-g_adc_val[9])*ADC2VOLATAGE;
+        gr_motor_data.volatage =lowPassFilter(&lowpassr_volatage,temprv);
+        if (fabs(gr_motor_data.volatage)<0.02)
         {
-            gr_motor_data.current = (g_adc_val[8])*ADC2CURRENT+CURRENT_OFFSET-1.5;
-            if (fabs(gr_motor_data.current)<0.5)
-            {
-                gr_motor_data.current = 0.0;
-            }
+            gr_motor_data.volatage = 0.0;
+        }
+        /*电流采集速度计算*/
+        if (gr_motor_data.volatage>0)
+        {
+            temprI =g_adc_val[8]*g_adc_val[8]*ADC2CURRENT_P1+g_adc_val[8]*ADC2CURRENT_P2+ADC2CURRENT_P3;
+            gr_motor_data.current = lowPassFilter(&lowpassr_current,temprI);
             if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA )
             {
-                temprv = 0;
+                gr_motor_data.speed = 0;
             }
             else
             {
-                temprv = (fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
+                gr_motor_data.speed = (fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
             }
         }
-        else if (gr_motor_data.volatage <-0.1)
+        else if (gr_motor_data.volatage <0)
         {
-            gr_motor_data.current = (g_adc_val[7])*ADC2CURRENT+CURRENT_OFFSET-1.5;
+            gr_motor_data.current =g_adc_val[7]*g_adc_val[7]*ADC2CURRENT_P1+g_adc_val[7]*ADC2CURRENT_P2+ADC2CURRENT_P3;
             gr_motor_data.current = Value_limitf(0,gr_motor_data.current,(fabs(gr_motor_data.volatage)/MOTER_RA));
-            if (fabs(gr_motor_data.current)<0.5)
-            {
-                gr_motor_data.current = 0.0;
-            }
+            gr_motor_data.current = lowPassFilter(&lowpassr_current,gr_motor_data.current);
             if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA )
             {
-                temprv = 0;
+                gr_motor_data.speed = 0;
             }
             else
             {
-                temprv = -(fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
+                gr_motor_data.speed = -(fabs(gr_motor_data.volatage) - gr_motor_data.current * MOTER_RA)/MOTER_CE;
             }
         }
         else
         {
             gr_motor_data.volatage = 0;
             gr_motor_data.current = 0;
-            temprv = 0;
-
+            gr_motor_data.speed = 0;
         }
-        /*右轮速度滤波*/
-        gr_motor_data.speed = temprv;//filterValue_float(&filter_rspeed,temprv);
-//       /*左右电机 PWM PID闭环 计算*/	
-    pid_t++;
-    if(pid_t >2)
-    {
-      pid_t = 0;
+     /**************左右电机 PWM PID闭环 计算****************************/	
       if (Struc_ActuPra_Int.adcx < -200 || Struc_ActuPra_Int.adcx > 200 || Struc_ActuPra_Int.adcy > 200 || Struc_ActuPra_Int.adcy < -200)
       {
-        /*积分限制幅度*/
-        // integral_limit(&gl_speed_pid,10,-10);
-        // integral_limit(&gr_speed_pid,10,-10);
-        gl_motor_data.pwm = increment_pid_ctrl(&gl_speed_pid, gl_motor_data.speed);         /* 速度环PID控制（外环） */
-        gr_motor_data.pwm = increment_pid_ctrl(&gr_speed_pid, gr_motor_data.speed);         /* 速度环PID控制（外环） */
-        // 电流保护
-        // if (gl_motor_data.current> 90 || gr_motor_data.current >90)
-        // {
-        //     gl_motor_data.pwm = 0;
-        //     gr_motor_data.pwm = 0;
-        // }
+        gl_motor_data.pwm = increment_pid_ctrl(&gl_speed_pid, gl_motor_data.speed);//,couple_error,0);         /* 速度环PID控制（外环） */
+        gr_motor_data.pwm = increment_pid_ctrl(&gr_speed_pid, gr_motor_data.speed);//,couple_error,1);         /* 速度环PID控制（外环） */
+        static uint16_t overcurrent_lcnt,overcurrent_rcnt;
+        if (gl_motor_data.current> 70 )
+        {
+            overcurrent_lcnt ++;
+            if (overcurrent_lcnt>5000)
+            {
+                gl_motor_data.pwm =  gl_motor_data.pwm*0.5;    
+            }
+            if (overcurrent_lcnt>10000)
+            {
+
+                overcurrent_lcnt = 0;
+                gl_motor_data.pwm = 0;
+            }
+
+        }
+        else
+        {
+            overcurrent_lcnt = 0;
+
+        }
+
+        if (gr_motor_data.current >70)
+        {
+            overcurrent_rcnt ++;
+            if (overcurrent_rcnt>5000)
+            {
+                gr_motor_data.pwm =  gr_motor_data.pwm*0.5;    
+            }
+            if (overcurrent_rcnt >10000)
+            {
+                overcurrent_rcnt = 0;
+                gr_motor_data.pwm = 0;
+            }
+        }
+        else
+        {
+           overcurrent_rcnt = 0;
+        }
+
         /*理论占空比*/
         gl_motor_data.theory_pwm  =fabs(Struc_ActuPra_Out.L_Velocity *0.083);
         gr_motor_data.theory_pwm = fabs(Struc_ActuPra_Out.R_Velocity *0.083);
         /* 占空比约束*/
-        gl_motor_data.pwm = Value_limitf(-3*gl_motor_data.theory_pwm, gl_motor_data.pwm, 3*gl_motor_data.theory_pwm);
-        gr_motor_data.pwm = Value_limitf(-3*gr_motor_data.theory_pwm, gr_motor_data.pwm, 3*gr_motor_data.theory_pwm);	
+        // gl_motor_data.pwm = Value_limitf(-4*gl_motor_data.theory_pwm, gl_motor_data.pwm, 4*gl_motor_data.theory_pwm);
+        // gr_motor_data.pwm = Value_limitf(-4*gr_motor_data.theory_pwm, gr_motor_data.pwm, 4*gr_motor_data.theory_pwm);
         /*算术平均滤波占空比滤波处理*/
         gl_motor_data.pwm = filterValue_float(&filter_Lpwm,gl_motor_data.pwm);
         gr_motor_data.pwm = filterValue_float(&filter_Rpwm,gr_motor_data.pwm);
-
+        /*占空比约束*/
+        gl_motor_data.pwm = Value_limitf(-0.6, gl_motor_data.pwm, 0.6);
+        gr_motor_data.pwm = Value_limitf(-0.6, gr_motor_data.pwm, 0.6);
       }
       else
       {
-        // 停止电机
         gl_motor_data.pwm =0.0;
         gr_motor_data.pwm  =0.0;
         LeftMoterMove(gl_motor_data.pwm,0);
@@ -233,9 +255,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //重置PID 参数
         pid_init();
       }
-    }
-
-      
-
     }		
 }

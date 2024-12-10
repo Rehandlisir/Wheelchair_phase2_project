@@ -4,7 +4,7 @@
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-11-20 17:35:03
+ * @LastEditTime : 2024-12-09 20:33:04
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/underpanControl.h"
@@ -144,7 +144,7 @@ void VelocityLevelSet(void)
 	Struc_ActuPra_Int.K_revise = sin(0.5*pi-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi))
 	+cos(0.5*pi-(pi/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *pi));
 	Struc_ActuPra_Int.K_tran2RPM = 15.0;
-	Struc_ActuPra_Int.set_Maximum_Strspeed = 2.0 ;
+	Struc_ActuPra_Int.set_Maximum_Strspeed =2.0 ;
 	if(Struc_ActuPra_Int.set_Maximum_Strspeed ==1.0 )
 	{
 		Struc_ActuPra_Int.k_backpra =1.0;
@@ -178,4 +178,3 @@ void underpanExcute(void)
 
 	velocity_maping(Struc_ActuPra_Int); /*速度规划 */
 }
-
