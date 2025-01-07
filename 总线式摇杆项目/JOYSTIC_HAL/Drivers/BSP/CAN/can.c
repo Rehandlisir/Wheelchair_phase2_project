@@ -82,7 +82,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     PeriphClkInit.FdcanClockSelection = RCC_FDCANCLKSOURCE_PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
     {
-      return 1;
+      ;
     }
     __HAL_RCC_FDCAN_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();

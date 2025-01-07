@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/fu/Desktop/底盘Demo/Wheelchair_phase2_project/底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9",
+      "program": "c:/Users/fu/Desktop/底盘Demo/Wheelchair_phase2_project/底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

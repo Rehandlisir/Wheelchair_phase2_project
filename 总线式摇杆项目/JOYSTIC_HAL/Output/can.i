@@ -38278,7 +38278,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* fdcanHandle)
     PeriphClkInit.FdcanClockSelection = (0x2UL << (24U));
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
     {
-      return 1;
+      ;
     }
     do { volatile uint32_t tmpreg; ((((RCC_TypeDef *) (((0x40000000UL) + 0x00020000UL) + 0x1000UL))->APB1ENR1) |= ((0x1UL << (25U)))); tmpreg = ((((RCC_TypeDef *) (((0x40000000UL) + 0x00020000UL) + 0x1000UL))->APB1ENR1) & ((0x1UL << (25U)))); (void)tmpreg; } while(0);
     do { volatile uint32_t tmpreg; ((((RCC_TypeDef *) (((0x40000000UL) + 0x00020000UL) + 0x1000UL))->AHB2ENR) |= ((0x1UL << (0U)))); tmpreg = ((((RCC_TypeDef *) (((0x40000000UL) + 0x00020000UL) + 0x1000UL))->AHB2ENR) & ((0x1UL << (0U)))); (void)tmpreg; } while(0);

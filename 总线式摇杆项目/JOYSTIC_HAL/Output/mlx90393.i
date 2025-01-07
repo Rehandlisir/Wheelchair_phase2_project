@@ -37739,8 +37739,6 @@ void mlx_90393_offset(void)
 	
 	 mlxdata.ydata = mlxdata.ydata - mlxdata.y_offset;
 	
-	   
-
 
      
     mlxdata.xdata  = filterValue_int32(&filter_mlx_xdata, mlxdata.xdata);
