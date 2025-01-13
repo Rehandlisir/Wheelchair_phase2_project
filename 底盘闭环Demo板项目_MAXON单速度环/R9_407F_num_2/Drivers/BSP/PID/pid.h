@@ -58,6 +58,7 @@ typedef struct
     __IO float  CoupleError;          /*耦合误差 */
     uint16_t    smaplse_Pid_detec_time; //PID计算周期计时值
     uint8_t     detect_flage; //PID计算计时值到达标识
+    float       test_data;
 } PID_TypeDef;
 
 extern PID_TypeDef  gl_speed_pid;           /* 左轮速度环PID参数结构体 */

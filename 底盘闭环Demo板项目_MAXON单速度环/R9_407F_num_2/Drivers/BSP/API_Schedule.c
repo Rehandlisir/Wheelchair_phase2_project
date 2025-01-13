@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/API_Schedule.c
+ * @FilePath     : /R9_407F_num_2/Drivers/BSP/API_Schedule.c
  * @Description  :  
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-01-06 13:59:53
+ * @LastEditTime : 2025-01-09 14:38:27
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "API_Schedule.h"
@@ -16,7 +16,7 @@
 struct TaskStruct TaskST[] =
 	{
 		{0, 1, 0, Task_GetMlx90393},
-		{0, 3, 0, Task_UnderpanDrive},
+		{0, 1, 0, Task_UnderpanDrive},
 		{0, 300, 0, Task_led_control},
 		{0, 1, 0, Task_R9DataScope},
 	};

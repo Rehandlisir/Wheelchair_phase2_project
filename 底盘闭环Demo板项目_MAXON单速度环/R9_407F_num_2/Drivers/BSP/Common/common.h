@@ -103,13 +103,8 @@ extern LowPassFilter lowpassl_volatage;
 extern LowPassFilter lowpassr_volatage;
 extern LowPassFilter lowpassl_current;
 extern LowPassFilter lowpassr_current;
-
-extern HighPassFilter hightpassl_speed;
-extern HighPassFilter hightpassr_speed;
-extern HighPassFilter hightpassl_volatage;
-extern HighPassFilter hightpassr_volatage;
-extern HighPassFilter hightpassl_current;
-extern HighPassFilter hightpassr_current;
+extern LowPassFilter lowpassy_port;
+extern LowPassFilter lowpassx_port;
 
 int32_t Value_limit(int32_t min_value ,int32_t current_value ,int32_t max_value);
 int32_t Value_ResetXzero(int32_t min_value, int32_t current_value, int32_t max_value);
@@ -141,10 +136,7 @@ int16_t low_pass_filter9(int16_t value,float alpha);
 void lowpass_init(void);
 void initLowPassFilter(LowPassFilter *filter, double cutoffFrequency, double samplingFrequency);
 double lowPassFilter(LowPassFilter *filter, double input);
-/*高通滤波器*/
-void init_high_pass_filter(HighPassFilter* filter ,float sample_rate, float cutoff_frequency);
-float highPass_filter(HighPassFilter* filter, float current_input); 
-void highpass_init(void);
+
 #endif
 
 

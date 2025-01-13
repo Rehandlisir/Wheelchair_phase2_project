@@ -500,6 +500,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\BSP\PID\pid.c</FilePath>
             </File>
+            <File>
+              <FileName>curve.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Drivers\BSP\Curve_planing\curve.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

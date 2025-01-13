@@ -1,3 +1,4 @@
+
 /**
  ****************************************************************************************************
  * @file        btim.c
@@ -186,8 +187,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             gr_motor_data.speed = 0;
         }
      /**************左右电机 PWM PID闭环 计算****************************/	
-      if (Struc_ActuPra_Int.adcx < -200 || Struc_ActuPra_Int.adcx > 200 || Struc_ActuPra_Int.adcy > 200 || Struc_ActuPra_Int.adcy < -200)
-      {
             gl_motor_data.pwm = increment_pid_ctrl(&gl_speed_pid, gl_motor_data.speed);
             gr_motor_data.pwm = increment_pid_ctrl(&gr_speed_pid, gr_motor_data.speed);
         // static uint16_t overcurrent_lcnt,overcurrent_rcnt;
@@ -234,23 +233,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         gl_motor_data.theory_pwm  =fabs(Struc_ActuPra_Out.L_Velocity *0.083);
         gr_motor_data.theory_pwm = fabs(Struc_ActuPra_Out.R_Velocity *0.083);
         /* 占空比约束*/
-        // gl_motor_data.pwm = Value_limitf(-4*gl_motor_data.theory_pwm, gl_motor_data.pwm, 4*gl_motor_data.theory_pwm);
-        // gr_motor_data.pwm = Value_limitf(-4*gr_motor_data.theory_pwm, gr_motor_data.pwm, 4*gr_motor_data.theory_pwm);
         /*算术平均滤波占空比滤波处理*/
         gl_motor_data.pwm = filterValue_float(&filter_Lpwm,gl_motor_data.pwm);
         gr_motor_data.pwm = filterValue_float(&filter_Rpwm,gr_motor_data.pwm);
         /*占空比约束*/
         gl_motor_data.pwm = Value_limitf(-0.8, gl_motor_data.pwm, 0.8);
         gr_motor_data.pwm = Value_limitf(-0.8, gr_motor_data.pwm, 0.8);
-      }
-      else
-      {
-        gl_motor_data.pwm = 0.0;
-        gr_motor_data.pwm = 0.0;
-        // LeftMoterMove(gl_motor_data.pwm,0);
-        // RightMoterMove(gr_motor_data.pwm,1);
-        //重置PID 参数
-        pid_init();
-      }
-    }		
+    }
+	
 }

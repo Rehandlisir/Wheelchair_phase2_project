@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
+ * @FilePath     : /R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
  * @Description  :  
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-01-06 13:45:57
+ * @LastEditTime : 2025-01-13 10:44:58
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/WheelSpeedMap.h"
@@ -95,22 +95,51 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
 void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
 {
   static float y_port,x_port,x_portlimit;
+  static float limitKp;
   if (velPlanIn.adcy>0)
   {
-		y_port = velPlanIn.set_forwardAct*sin(velPlanIn.adcy/MAX_YDATA*PI/2.0);
+	y_port = velPlanIn.set_forwardAct*sin(velPlanIn.adcy/MAX_YDATA*PI/2.0);
+	
   }
   else
   {
-		y_port = velPlanIn.set_reverseAct*sin(velPlanIn.adcy/MAX_YDATA*PI/2.0);
-		
+	y_port = velPlanIn.set_reverseAct*sin(velPlanIn.adcy/MIN_YDATA*PI/2.0);	
   }
+  x_port =  velPlanIn.set_turnAct*sin(velPlanIn.adcx/MAX_XDATA*PI/2.0);
   
-    x_port =  velPlanIn.set_turnAct*sin(velPlanIn.adcx/MAX_XDATA*PI/2.0);
+//   // x_port  转向约束
+//   	if(Struc_ActuPra_Int.set_velocitylevelAct ==1)
+// 	{
+// 		limitKp = 0.19;
+// 	}
+// 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==2)
+// 	{
+// 		limitKp = 0.38;
+// 	}
+// 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==3)
+// 	{
+// 		limitKp = 0.57;
+// 	}
+// 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==4)
+// 	{
+// 		limitKp = 0.76;
+// 	}
+// 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==5)
+// 	{
+// 		limitKp = 0.85;
+// 	}
+	// x_port =lowPassFilter(&lowpassx_port,x_port);
+	// y_port = lowPassFilter(&lowpassy_port,y_port);
 
+  	// x_port = Value_limitf(limitKp*velPlanIn.set_turnAct/velPlanIn.set_forwardAct*y_port -velPlanIn.set_turnAct,x_port,-limitKp*velPlanIn.set_turnAct/velPlanIn.set_forwardAct*y_port +velPlanIn.set_turnAct);
+ 	// y_port = Value_limitf(limitKp*velPlanIn.set_forwardAct/velPlanIn.set_turnAct *x_port-velPlanIn.set_forwardAct,y_port,-limitKp*velPlanIn.set_forwardAct/velPlanIn.set_turnAct *x_port+velPlanIn.set_forwardAct);
+ 	
+
+ 
   /*寻找摇杆稳定性的两个点对应的*/
   /*逆运动学映射计算*/
 	Struc_ActuPra_Out.L_Velocity = y_port + x_port;
-  Struc_ActuPra_Out.R_Velocity = y_port - x_port;
+    Struc_ActuPra_Out.R_Velocity = y_port - x_port;
  	/*左右目标轮线速度 转换为 电机目标转速*/
 	Struc_ActuPra_Out.LN_Velocity = Struc_ActuPra_Out.L_Velocity*Struc_ActuPra_Int.K_tran2RPM;
 	Struc_ActuPra_Out.RN_Velocity = Struc_ActuPra_Out.R_Velocity*Struc_ActuPra_Int.K_tran2RPM;
@@ -120,6 +149,7 @@ void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
 	gl_speed_pid.SetPoint = Struc_ActuPra_Out.LN_Velocity;
 	gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
 	car_move(gl_motor_data.pwm,gr_motor_data.pwm,1,0,0);
+	// printf("%f,%f\n\t",y_port,x_port);
 	
 }
 
@@ -139,7 +169,7 @@ void Move_parameter_set(void)
 	Struc_ActuPra_Int.setMaxspeedInTurn = 0.15;
 	
 	/*实际设定挡位*/
-	Struc_ActuPra_Int.set_velocitylevelAct = 5.0;
+	Struc_ActuPra_Int.set_velocitylevelAct = 4.0;
 	/*实际设定挡位下的最大前行速度*/
 	Struc_ActuPra_Int.set_forwardAct = (Struc_ActuPra_Int.set_Max_Forward-Struc_ActuPra_Int.set_Min_Forward)/(Struc_ActuPra_Int.set_maxvelocitylevel-Struc_ActuPra_Int.set_minvelocitylevel)*
 	(Struc_ActuPra_Int.set_velocitylevelAct-Struc_ActuPra_Int.set_minvelocitylevel) + Struc_ActuPra_Int.set_Min_Forward;
@@ -149,7 +179,6 @@ void Move_parameter_set(void)
 	/*实际设定挡位下的最大转向速度*/
 	Struc_ActuPra_Int.set_turnAct = (Struc_ActuPra_Int.set_Max_Turn - Struc_ActuPra_Int.set_Min_Turn)/(Struc_ActuPra_Int.set_maxvelocitylevel-Struc_ActuPra_Int.set_minvelocitylevel)*
 	(Struc_ActuPra_Int.set_velocitylevelAct-Struc_ActuPra_Int.set_minvelocitylevel) + Struc_ActuPra_Int.set_Min_Turn;
-	
 	
 }
 
@@ -161,23 +190,24 @@ void Move_parameter_set(void)
 void brake_excute(void)
 {
 /*松开抱闸*/
-	if (Struc_ActuPra_Int.adcx < -200 || Struc_ActuPra_Int.adcx > 200 || Struc_ActuPra_Int.adcy > 200 || Struc_ActuPra_Int.adcy < -200)
+	if (Struc_ActuPra_Int.adcx!=0 ||Struc_ActuPra_Int.adcy!=0) //(Struc_ActuPra_Int.adcx < -300 || Struc_ActuPra_Int.adcx > 300 || Struc_ActuPra_Int.adcy > 300 || Struc_ActuPra_Int.adcy < -300)
 	{
-			brake(0);	
-			brakeflage = 0;	
-			gl_motor_data.brake_state = 0;
-			gr_motor_data.brake_state = 0;
+		brake(0);	
+		brakeflage = 0;	
+		gl_motor_data.brake_state = 0;
+		gr_motor_data.brake_state = 0;
 	}	
 	else
 /*锁住抱闸*/
 	{	
 		brakeflage++;
-		if (brakeflage > 50) 
+		if ((fabs(gl_motor_data.speed)<5.0 && fabs(gr_motor_data.speed<5.0))|| brakeflage>250 ) 
 		{ 
-			brake(1);
-			gl_motor_data.brake_state = 1;
-			gr_motor_data.brake_state = 1;
-			brakeflage = 0;
+				pid_init();
+				brake(1);
+				gl_motor_data.brake_state = 1;
+				gr_motor_data.brake_state = 1;
+				brakeflage =0;
 		}
 	}	
 }
@@ -214,12 +244,12 @@ void VelocityLevelSet(void)
 void underpanExcute(void)
 {
 	static float limitKp;
-	brake_excute();
+	
 //  VelocityLevelSet();
 	Move_parameter_set();
 	/*将数据约束在一个正方形中*/
-	mlxdata.xdata = Value_limit(MIN_XDATA, mlxdata.xdata, MAX_XDATA);
-	mlxdata.ydata = Value_limit(MIN_YDATA, mlxdata.ydata, MAX_YDATA); 
+	mlxdata.xdata = Value_limit(-MIN_XDATA, mlxdata.xdata, MAX_XDATA);
+	mlxdata.ydata = Value_limit(-MIN_YDATA, mlxdata.ydata, MAX_YDATA); 
 	/*死区区域划分*/
 	if(mlxdata.xdata>=-350&&mlxdata.xdata<=350&&mlxdata.ydata>=-350&&mlxdata.ydata<=350)
 	{
@@ -229,34 +259,36 @@ void underpanExcute(void)
 	/*摇杆数据限幅度处理*/
 	Struc_ActuPra_Int.adcx =mlxdata.xdata;
 	Struc_ActuPra_Int.adcy =mlxdata.ydata;
+	
 	if(Struc_ActuPra_Int.set_velocitylevelAct ==1)
 	{
-		limitKp = 0.17;
+		limitKp = 0.19;
 	}
 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==2)
 	{
-		limitKp = 0.34;
+		limitKp = 0.38;
 	}
 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==3)
 	{
-		limitKp = 0.51;
+		limitKp = 0.57;
 	}
 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==4)
 	{
-		limitKp = 0.68;
+		limitKp = 0.76;
 	}
 	else if(Struc_ActuPra_Int.set_velocitylevelAct ==5)
 	{
 		limitKp = 0.85;
 	}
+	// Struc_ActuPra_Int.adcx = local_slopelimitx(Struc_ActuPra_Int.adcx,25,25);  
+	// Struc_ActuPra_Int.adcy = local_slopelimity(Struc_ActuPra_Int.adcy,25,25);
+
 	Struc_ActuPra_Int.adcx = Value_limit(limitKp*Struc_ActuPra_Int.adcy-3500,Struc_ActuPra_Int.adcx,-limitKp*Struc_ActuPra_Int.adcy+3500);
 	Struc_ActuPra_Int.adcy = Value_limit(limitKp*Struc_ActuPra_Int.adcx-3500,Struc_ActuPra_Int.adcy,-limitKp*Struc_ActuPra_Int.adcx+3500);
-	
-	Struc_ActuPra_Int.adcx = local_slopelimitx(Struc_ActuPra_Int.adcx,25,25);  
-	Struc_ActuPra_Int.adcy = local_slopelimity(Struc_ActuPra_Int.adcy,25,25);
-	
+	// Struc_ActuPra_Int.adcx  =lowPassFilter(&lowpassx_port,Struc_ActuPra_Int.adcx);
+	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_port,Struc_ActuPra_Int.adcy);
+	brake_excute();
 //	velocity_maping(Struc_ActuPra_Int); /*速度规划 */
 	Reverse_Kinemaping(Struc_ActuPra_Int);
-	printf("%f,%f,%d,%d\n\t",Struc_ActuPra_Out.LN_Velocity,Struc_ActuPra_Out.RN_Velocity,Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
-
+	// printf("%f,%f,%d,%d\n\t",Struc_ActuPra_Out.LN_Velocity,Struc_ActuPra_Out.RN_Velocity,Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
 }

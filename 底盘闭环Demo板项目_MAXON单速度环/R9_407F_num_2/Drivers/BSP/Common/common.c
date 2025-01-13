@@ -583,7 +583,8 @@ int16_t low_pass_filter9(int16_t value,float alpha)
  LowPassFilter lowpassr_volatage;
  LowPassFilter lowpassl_current;
  LowPassFilter lowpassr_current;
-
+ LowPassFilter lowpassy_port;
+ LowPassFilter lowpassx_port;
 void lowpass_init(void)
 {
   initLowPassFilter(&lowpassl_speed,2,1000);
@@ -592,6 +593,9 @@ void lowpass_init(void)
   initLowPassFilter(&lowpassr_volatage,4,1000);
   initLowPassFilter(&lowpassl_current,4,1000);
   initLowPassFilter(&lowpassr_current,4,1000);
+  initLowPassFilter(&lowpassy_port,25,1000);
+  initLowPassFilter(&lowpassx_port,300,1000);
+
 }
 // 初始化低通滤波器
 void initLowPassFilter(LowPassFilter *filter, double cutoffFrequency, double samplingFrequency) 
@@ -607,38 +611,4 @@ double lowPassFilter(LowPassFilter *filter, double input)
     // 滤波计算公式：output[n] = alpha * input[n] + (1 - alpha) * output[n-1]
     filter->output = filter->alpha * input + (1 - filter->alpha) * filter->output;
     return filter->output;
-}
-
-/*********************高通滤波器****************************************************************** */
- HighPassFilter hightpassl_speed;
- HighPassFilter hightpassr_speed;
- HighPassFilter hightpassl_volatage;
- HighPassFilter hightpassr_volatage;
- HighPassFilter hightpassl_current;
- HighPassFilter hightpassr_current;
-// 初始化高通滤波器
-void init_high_pass_filter(HighPassFilter* filter ,float sample_rate, float cutoff_frequency) 
-{
-    // 根据采样率和截止频率计算alpha系数
-    float dt = 1.0 / sample_rate;
-    filter->alpha = dt / (dt + 1.0 / (2 * 3.1415926f * cutoff_frequency));
-    filter->prev_input = 0;
-    filter->prev_output = 0;
-}
-void highpass_init(void)
-{
-  init_high_pass_filter(&hightpassl_speed,1000,3);
-  init_high_pass_filter(&hightpassr_speed,1000,3);
-  init_high_pass_filter(&hightpassl_volatage,1000,3);
-  init_high_pass_filter(&hightpassr_volatage,1000,3);
-  init_high_pass_filter(&hightpassl_current,1000,3);
-  init_high_pass_filter(&hightpassr_current,1000,3);
-}
-// 执行滤波操作的函数
-float highPass_filter(HighPassFilter* filter, float current_input) 
-{
-    float current_output = filter->alpha * (filter->prev_input - filter->prev_output) + filter->prev_output;
-    filter->prev_input = current_input;
-    filter->prev_output = current_output;
-    return current_output;
 }

@@ -14,7 +14,7 @@
 #include "./BSP/R9/inv_mpu.h"
 #include "./BSP/R9/inv_mpu_dmp_motion_driver.h" 
 #include "./BSP/R9/mlx90393.h"
-
+#include "./BSP/Curve_planing/curve.h"
 /* 捷和电机参数 */
 #define underpan_H 0.55 /**/
 
@@ -26,9 +26,9 @@
 #define Maxon_BEMF  0.1025    /*电机输出轴反电动势 0.1025V/RPM */
 
 #define MAX_XDATA 3500.0
-#define MIN_XDATA -3500.0
+#define MIN_XDATA 3500.0
 #define MAX_YDATA 3500.0
-#define MIN_YDATA -3500.0
+#define MIN_YDATA 3500.0
 #define YADC_DIM_MAX 250.0  
 #define YADC_DIM_MIN -250.0  
 #define XADC_DIM_MAX 250.0  
@@ -122,6 +122,7 @@ extern Motor_TypeDef gl_motor_data;  /*电机参数变量*/
 extern Motor_TypeDef gr_motor_data;  /*电机参数变量*/
 extern R9SYSTEM_TypeDef g_r9sys_data;
 extern uint16_t brakeflage;
+extern CurveObjectType lcurve; //电机调速曲线
 void velocity_maping(VELOCITY_PIn velPlanIn);
 void brake_excute(void);
 void VelocityLevelSet(void);
