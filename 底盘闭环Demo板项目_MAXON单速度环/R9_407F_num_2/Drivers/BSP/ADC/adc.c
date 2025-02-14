@@ -117,7 +117,7 @@ void adc3_nch_dma_init(void)
     HAL_DMA_Init(&g_dma_nch_adc3_handle);                                     /* 初始化DMA */
     __HAL_LINKDMA(&g_adc3_nch_dma_handle,DMA_Handle,g_dma_nch_adc3_handle);       /* 把ADC和DMA关联，用DMA传输ADC数据 */
     /*ADC DMA中断配置*/
-    HAL_NVIC_SetPriority(ADC_ADC3_DMASx_IRQn, 2, 1);                   /* 设置DMA中断优先级为3，子优先级为3 */
+    HAL_NVIC_SetPriority(ADC_ADC3_DMASx_IRQn, 1, 2);                   /* 设置DMA中断优先级为3，子优先级为3 */
     HAL_NVIC_EnableIRQ(ADC_ADC3_DMASx_IRQn);                           /* 使能DMA中断 */
     HAL_ADC_Start_DMA(&g_adc3_nch_dma_handle,(uint32_t *)g_adc_value, ADC3_SUM);  /* 开启ADC的DMA传输 */
 

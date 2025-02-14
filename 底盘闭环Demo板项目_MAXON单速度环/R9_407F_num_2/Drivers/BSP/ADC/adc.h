@@ -43,11 +43,8 @@
 extern uint16_t  g_adc_val[ADC3_CH_NUM];
 
 #define ADC2VOLATAGE         37.3/4096.0  // 电压换算
-#define ADC2CURRENT          0.46922775917297612114152591729761     //电流换算比例参数
-#define CURRENT_OFFSET       -191.61327      //电流换算常量参数
-#define ADC2CURRENT_P1       -0.001202
-#define ADC2CURRENT_P2        1.471
-#define ADC2CURRENT_P3        -402.4
+#define SAMP_RA              1.8e-3       //采样电阻
+/*电流与采样电压换算关系 Vout = 2.868 *Vin + 0.9892 => 实际电流 与采样电压换算关系 I = (AD/4096 *3.3 - 0.9892）/0.0051624 ; */
 #define ADC2BATTV            (254.0*3.3)/(4096.0*22.0) // 电池电压换算系数
 #define ADC2R9_10V           25.3/4096.0 // 10v电压换算系数
 #define ADC2R9_15V           (41.2*3.3)/(4096.0*8.2) // 15v电压换算系数

@@ -93,17 +93,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
 		OS_IT_RUN();
        /*摇杆can通讯心跳信号清0 操作*/
-       static uint8_t joy_t;
-       static uint8_t pid_t;       
-        joy_t++;
-        if (joy_t>200)
-        {
-            CanjoysticbufReceive[4] =0;
-            joy_t=0;
-        }
+    //    static uint8_t joy_t;
+    //    static uint8_t pid_t;       
+    //     joy_t++;
+    //     if (joy_t>200)
+    //     {
+    //         CanjoysticbufReceive[4] =0;
+    //         joy_t=0;
+    //     }
         /**************************************左路电机 电枢电压、电流、速度采集***************************************************/
-        templv = (g_adc_val[0]-g_adc_val[3])*ADC2VOLATAGE;
-        gl_motor_data.volatage =lowPassFilter(&lowpassl_volatage,templv);//
+        gl_motor_data.volatage = (g_adc_val[0]-g_adc_val[3])*ADC2VOLATAGE;
+        gl_motor_data.volatage =lowPassFilter(&lowpassl_volatage,gl_motor_data.volatage);//
         if (fabs(gl_motor_data.volatage)<0.02)
         {
             gl_motor_data.volatage = 0.0 ;
@@ -111,8 +111,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         /*电流采集速度计算*/
         if (gl_motor_data.volatage>0)
         {
-            templI =  pow(g_adc_val[2],2)*ADC2CURRENT_P1+g_adc_val[2]*ADC2CURRENT_P2+ADC2CURRENT_P3;
-            gl_motor_data.current =lowPassFilter(&lowpassl_current,templI);
+            gl_motor_data.current = (g_adc_val[2]/4096.0 *3.3 - 0.9892)/(2.86799*SAMP_RA);
+            gl_motor_data.current =lowPassFilter(&lowpassl_current,gl_motor_data.current);
             if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
             {
                 gl_motor_data.speed = 0;
@@ -124,8 +124,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         }
         else if (gl_motor_data.volatage <0)  
         {
-            templI = pow(g_adc_val[1],2)*ADC2CURRENT_P1+g_adc_val[1]*ADC2CURRENT_P2+ADC2CURRENT_P3;
-            gl_motor_data.current =lowPassFilter(&lowpassl_current,templI);
+            gl_motor_data.current  = (g_adc_val[1]/4096.0 *3.3 - 0.9892)/(2.86799*SAMP_RA);
+            gl_motor_data.current =lowPassFilter(&lowpassl_current,gl_motor_data.current );
             if (fabs(gl_motor_data.volatage) <= gl_motor_data.current * MOTER_RA )
             {
                 gl_motor_data.speed = 0;
@@ -146,8 +146,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 //    /**************************************右路电机 电枢电压、电流、速度采集***************************************************/
         /*右路电机 电枢电压、电流、速度采集*/
-        temprv = (g_adc_val[10]-g_adc_val[9])*ADC2VOLATAGE;
-        gr_motor_data.volatage =lowPassFilter(&lowpassr_volatage,temprv);
+        gr_motor_data.volatage = (g_adc_val[10]-g_adc_val[9])*ADC2VOLATAGE;
+        gr_motor_data.volatage =lowPassFilter(&lowpassr_volatage, gr_motor_data.volatage);
         if (fabs(gr_motor_data.volatage)<0.02)
         {
             gr_motor_data.volatage = 0.0;
@@ -155,8 +155,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         /*电流采集速度计算*/
         if (gr_motor_data.volatage>0)
         {
-            temprI =g_adc_val[8]*g_adc_val[8]*ADC2CURRENT_P1+g_adc_val[8]*ADC2CURRENT_P2+ADC2CURRENT_P3;
-            gr_motor_data.current = lowPassFilter(&lowpassr_current,temprI);
+            gr_motor_data.current =(g_adc_val[8]/4096.0 *3.3 - 0.9892)/(2.86799*SAMP_RA);
+            gr_motor_data.current = lowPassFilter(&lowpassr_current,gr_motor_data.current);
             if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA)
             {
                 gr_motor_data.speed = 0;
@@ -168,8 +168,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         }
         else if (gr_motor_data.volatage <0)
         {
-            gr_motor_data.current =g_adc_val[7]*g_adc_val[7]*ADC2CURRENT_P1+g_adc_val[7]*ADC2CURRENT_P2+ADC2CURRENT_P3;
-            gr_motor_data.current = Value_limitf(0,gr_motor_data.current,(fabs(gr_motor_data.volatage)/MOTER_RA));
+            gr_motor_data.current =(g_adc_val[7]/4096.0 *3.3 - 0.9892)/(2.86799*SAMP_RA);
             gr_motor_data.current = lowPassFilter(&lowpassr_current,gr_motor_data.current);
             if (fabs(gr_motor_data.volatage) <= gr_motor_data.current * MOTER_RA )
             {

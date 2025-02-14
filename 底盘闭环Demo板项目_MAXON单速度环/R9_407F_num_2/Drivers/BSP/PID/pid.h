@@ -6,23 +6,26 @@
 
 /******************************************************************************************/
 /* PID相关参数 */
-
+#define  SAMPLINGTIMES  10         /* 0：位置式 ，1：增量式 */
 #define  INCR_LOCT_SELECT  1         /* 0：位置式 ，1：增量式 */
-
 #if INCR_LOCT_SELECT
 
-    // /* 增量式PID 速度环参数相关宏 */
-    #define  S_KP     0.006250000f               /* P参数 0.007*/
-    #define  S_KI      0.00000785f               /* I参数 */
-    #define  S_KD      0.0f               /* D参数*/
-    #define  S_SMAPLSE_PID_SPEED  1       /* 采样周期 单位ms*/
-
-
-    /* 定义电流环（内环）PID参数相关宏 */
-    #define  C_KP      0.03f             /* P参数 */
-    #define  C_KI      0.000008f             /* I参数 */
-    #define  C_KD      0.00000000f             /* D参数 */
-    #define  C_SMAPLSE_PID_SPEED  50       /* 采样周期 单位ms */
+    /* 增量式PID 左轮速度环参数相关宏 */
+    #define  S_KP_L      0.006250000f               /* P参数 0.007*/                 /* P参数 0.007*/
+    #define  S_KI_L      0.00000785f                   /* I参数 */
+    #define  S_KD_L      0.0f                     /* D参数*/ 
+    /* 增量式PID 右轮速度环参数相关宏 */
+    #define  S_KP_R     0.006250000f                  /* P参数 0.007*/
+    #define  S_KI_R     0.00000785f                  /* I参数 */
+    #define  S_KD_R     0.0f                   /* D参数*/ 
+    /*增量式PID左轮电流环PID参数相关宏*/
+    #define  C_KP_L      0.03f             /* P参数 */
+    #define  C_KI_L      0.000008f             /* I参数 */
+    #define  C_KD_L      0.00000000f             /* D参数 */
+    /*增量式PID右轮电流环PID参数相关宏*/
+    #define  C_KP_R      0.03f             /* P参数 */
+    #define  C_KI_R      0.000008f             /* I参数 */
+    #define  C_KD_R      0.00000000f             /* D参数 */
 #else
 
 /* 位置式PID参数相关宏 */

@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /MDK-ARMc:/Users/fu/Desktop/第二阶段新项目/底盘闭环Demo板项目/R9_407F_num_2/Drivers/BSP/CAN/can.c
+ * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/CAN/can.c
  * @Description  :  CAN
  * @Author       : lisir lisir@rehand.com
  * @Version      : 0.0.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-11-25 11:50:51
+ * @LastEditTime : 2025-02-14 09:27:47
  * @2024 by Rehand Medical Technology Co., LTD, All Rights Reserved.
 **/
 
@@ -238,32 +238,32 @@ void Can_joystic_receive(void)
     mlxdata.xdata = (int16_t)(CanjoysticbufReceive[1] << 8 | CanjoysticbufReceive[0]);
     mlxdata.ydata = (int16_t)(CanjoysticbufReceive[3] << 8 | CanjoysticbufReceive[2]);
     mlxdata.mlx90393_CAN_id = CanjoysticbufReceive[4];
-    if (mlxdata.mlx90393_CAN_id ==0)
-    {
-        comcont++;
-        if (comcont>10) //通讯失败
-        {
-            comcont =0;
-            comflage = 1;
-        }
+    // if (mlxdata.mlx90393_CAN_id ==0)
+    // {
+    //     comcont++;
+    //     if (comcont>10) //通讯失败
+    //     {
+    //         comcont =0;
+    //         comflage = 1;
+    //     }
 
-    }
-    else
-    {
-        comcont = 0;
-        comflage =0;
-    }
-    if (comflage)
-    {
+    // }
+    // else
+    // {
+    //     comcont = 0;
+    //     comflage =0;
+    // }
+    // if (comflage)
+    // {
 
-        mlxdata.xdata =0;
-        mlxdata.ydata =0;
-        CanjoysticbufReceive[0]=0;
-        CanjoysticbufReceive[1]=0;
-        CanjoysticbufReceive[2]=0;
-        CanjoysticbufReceive[3]=0;
+    //     mlxdata.xdata =0;
+    //     mlxdata.ydata =0;
+    //     CanjoysticbufReceive[0]=0;
+    //     CanjoysticbufReceive[1]=0;
+    //     CanjoysticbufReceive[2]=0;
+    //     CanjoysticbufReceive[3]=0;
 
-    }
+    // }
 }
 
 void CanCmdled(uint8_t cmd1,uint8_t cmd2,uint8_t cmd3,uint8_t cmd4,uint8_t cmd5)

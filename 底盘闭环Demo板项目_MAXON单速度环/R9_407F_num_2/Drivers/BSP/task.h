@@ -25,16 +25,8 @@
 void Hard_devInit(void);
 void Task_GetMlx90393(void);
 void Task_led_control(void);
-void Task_GetADC_AllData(void);
-void Task_UnderpanDrive(void);
-void Task_linearactuatorDrive(void);
-void Task_gyroscopeData(void);
-void Task_ModbusSlaveExecute (void);
-void Task_ultrasonicreadExecute1 (void);
-void Task_ultrasonicreadExecute2 (void);
-void Task_CanKeyRun(void);
-void Task_ex_handl(void);
-void Task_Comsdetect(void);
-void Task_KineCacu(void);
+void Task_Maping(void);
+void Task_carExcute(void);
+
 void Task_R9DataScope(void);
 #endif

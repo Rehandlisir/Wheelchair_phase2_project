@@ -25,14 +25,16 @@
 /*  MAXON电机参数 */
 #define Maxon_BEMF  0.1025    /*电机输出轴反电动势 0.1025V/RPM */
 
-#define MAX_XDATA 3500.0
-#define MIN_XDATA 3500.0
-#define MAX_YDATA 3500.0
-#define MIN_YDATA 3500.0
+#define MAX_XDATA 2810.0
+#define MIN_XDATA 2810.0
+#define MAX_YDATA 2810.0
+#define MIN_YDATA 2810.0
 #define YADC_DIM_MAX 250.0  
 #define YADC_DIM_MIN -250.0  
 #define XADC_DIM_MAX 250.0  
 #define XADC_DIM_MIN -250.0  
+#define JOYSTIC_R 3000.0
+#define DEAD_ZONE_R 300.0
 
 /*车体运行状态结构体*/
 typedef enum
@@ -116,6 +118,9 @@ typedef struct
   float r9_battary_v;
   float r9_10v;
   float r9_15v;
+  uint8_t r9pid_start;
+  uint8_t r9pid_stop;
+
 } R9SYSTEM_TypeDef;
 
 extern Motor_TypeDef gl_motor_data;  /*电机参数变量*/
@@ -126,9 +131,10 @@ extern CurveObjectType lcurve; //电机调速曲线
 void velocity_maping(VELOCITY_PIn velPlanIn);
 void brake_excute(void);
 void VelocityLevelSet(void);
-void underpanExcute(void);
+void car_maping(void);
 // void MPU6050Excute(void);
 /*底盘逆运动学相关*/
 void Reverse_Kinemaping(VELOCITY_PIn velPlanIn);
 void Move_parameter_set(void);
+void moter_run(void);
 #endif
