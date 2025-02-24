@@ -73,12 +73,8 @@ void Task_carExcute(void)
 void Task_R9DataScope(void)
 {
 
-	// printf("ASH1_AD_F:%d,ASH2_AD_F:%d,\t\n",g_adc_val[7],g_adc_val[8]);
-
 /*闭环采样数据 ：1 左轮规划速度 2 左轮实际速度  3左轮电枢电压  4 左轮电枢电流 
 5 右轮规划速度 6 右轮实际速度  7右轮电枢电压  8 右轮电枢电流  9 左轮占空比  10 右轮占空比*/
-printf("%f,%f,%f,%f,%f,%f,%f,%f,%d,%d\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
-gr_speed_pid.SetPoint,gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
-
-// printf("%d,%d,%d,%d\t\n",g_adc_val[8],g_adc_val[7],g_adc_val[2],g_adc_val[1]);
+printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_volatage_pid.SetPoint,gl_motor_data.volatage,gl_motor_data.current,\
+gr_speed_pid.SetPoint,gr_motor_data.speed,gr_volatage_pid.SetPoint,gr_motor_data.volatage,gr_motor_data.current);
 }

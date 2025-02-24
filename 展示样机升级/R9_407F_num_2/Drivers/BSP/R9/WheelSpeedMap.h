@@ -97,7 +97,7 @@ typedef struct
   float power;            /*电机功率*/
   float speed;            /*电机实际速度*/
   float pwm;
-  float test_data;
+  float volatage_Ra;   /*内阻分压*/
 } Motor_TypeDef;
 
 typedef struct 
@@ -124,5 +124,5 @@ void brake_excute(void);
 void VelocityLevelSet(void);
 void moter_run(void);
 void mapingExcute(void);
-
+int8_t sign(float x);
 #endif

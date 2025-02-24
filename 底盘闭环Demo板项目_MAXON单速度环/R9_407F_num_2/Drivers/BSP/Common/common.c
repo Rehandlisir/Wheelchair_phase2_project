@@ -90,8 +90,6 @@ double lowPassFilter(LowPassFilter *filter, double input)
 /*均值滤波器调用*/
 AverageFilter filter_LN;
 AverageFilter filter_RN;
-AverageFilter filter_Lpwm;
-AverageFilter filter_Rpwm;
 AverageFilter filter_lspeed;
 AverageFilter filter_rspeed;
 AverageFilter filter_ADCX;
@@ -107,19 +105,23 @@ LowPassFilter lowpassy_ADC;
 LowPassFilter lowpassx_ADC;
 LowPassFilter lowpass_lspeedTarget;
 LowPassFilter lowpass_rspeedTarget;
+LowPassFilter filter_Lpwm;
+LowPassFilter filter_Rpwm;
 
 void lowpass_init(void)
 {
-  initLowPassFilter(&lowpassl_speed,2,1000);
-  initLowPassFilter(&lowpassr_speed,2,1000);
-  initLowPassFilter(&lowpassl_volatage,2,1000);
-  initLowPassFilter(&lowpassr_volatage,2,1000);
-  initLowPassFilter(&lowpassl_current,1,1000);
-  initLowPassFilter(&lowpassr_current,1,1000);
-  initLowPassFilter(&lowpassy_ADC,3,100);
-  initLowPassFilter(&lowpassx_ADC,3,100);
-  initLowPassFilter(&lowpass_lspeedTarget,50,100);
-  initLowPassFilter(&lowpass_rspeedTarget,50,100);
+  initLowPassFilter(&lowpassl_speed,4,1000);
+  initLowPassFilter(&lowpassr_speed,4,1000);
+  initLowPassFilter(&lowpassl_volatage,4,1000);
+  initLowPassFilter(&lowpassr_volatage,4,1000);
+  initLowPassFilter(&lowpassl_current,4,1000);
+  initLowPassFilter(&lowpassr_current,4,1000);
+  initLowPassFilter(&lowpassy_ADC,10,100);
+  initLowPassFilter(&lowpassx_ADC,10,100);
+  initLowPassFilter(&lowpass_lspeedTarget,2,100);
+  initLowPassFilter(&lowpass_rspeedTarget,2,100);
+  initLowPassFilter(&filter_Lpwm,50,1000);
+  initLowPassFilter(&filter_Rpwm,50,1000);
 }
 
 

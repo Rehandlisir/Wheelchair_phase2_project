@@ -47,8 +47,7 @@
  
  extern AverageFilter filter_LN;
  extern AverageFilter filter_RN;
- extern AverageFilter filter_Lpwm;
- extern AverageFilter filter_Rpwm;
+
  extern AverageFilter filter_lspeed;
  extern AverageFilter filter_rspeed;
  extern AverageFilter filter_ADCX;
@@ -65,6 +64,8 @@
  extern LowPassFilter lowpassx_ADC;
  extern LowPassFilter lowpass_lspeedTarget;
  extern LowPassFilter lowpass_rspeedTarget;
+ extern LowPassFilter filter_Lpwm;
+ extern LowPassFilter filter_Rpwm;
  
  int16_t Value_limit(int16_t min_value, int16_t current_value, int16_t max_value);
  float Value_limitf(float min_value, float current_value, float max_value);

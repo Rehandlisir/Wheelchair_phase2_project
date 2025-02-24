@@ -15,6 +15,7 @@
 #include "./BSP/R9/inv_mpu_dmp_motion_driver.h" 
 #include "./BSP/R9/mlx90393.h"
 #include "./BSP/Curve_planing/curve.h"
+#include "./BSP/CAN/can.h"
 /* 捷和电机参数 */
 #define underpan_H 0.55 /**/
 
@@ -33,8 +34,8 @@
 #define YADC_DIM_MIN -250.0  
 #define XADC_DIM_MAX 250.0  
 #define XADC_DIM_MIN -250.0  
-#define JOYSTIC_R 3000.0
-#define DEAD_ZONE_R 300.0
+#define JOYSTIC_R 120.0
+#define DEAD_ZONE_R 12.0
 
 /*车体运行状态结构体*/
 typedef enum
@@ -106,11 +107,12 @@ typedef struct
   float power;            /*电机功率*/
   float speed;            /*电机实际速度*/
   uint8_t brake_state;    /*电机抱闸器动作状态 0:松开 1：锁住*/
-  uint16_t init_current_adc_val; /*电流初始ADC值大小 */
   float pwm;
-  float theory_pwm;
+  float volatageff_target;
+  float volatagefb_target;
+  float volatagecmd_target;
+  float predict_current;
   float battary_v;
-  float test_data;
 } Motor_TypeDef;
 
 typedef struct 

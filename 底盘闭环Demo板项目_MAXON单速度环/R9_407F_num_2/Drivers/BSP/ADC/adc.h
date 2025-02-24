@@ -38,7 +38,7 @@
 
 
 #define ADC3_CH_NUM                           11        /* 需要转换的通道数目 */
-#define ADC3_COLL                             1000                                                /* 单采集次数 */
+#define ADC3_COLL                             5                                                /* 单采集次数 */
 #define ADC3_SUM                              ADC3_CH_NUM * ADC3_COLL                               /* 总采集次数 */
 extern uint16_t  g_adc_val[ADC3_CH_NUM];
 

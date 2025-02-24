@@ -415,14 +415,14 @@
 
 void MoterL_pwm_chy_init(uint16_t arr, uint16_t psc);				   // 左轮电机
 void atim_tim1_cplm_pwm_set(uint16_t ccr1,uint16_t ccr2);
-void LeftMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void LeftMoterMove(double lduty_cycle);//, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
 void LeftMoterStop(void);
 
 void MoterR_pwm_chy_init(uint16_t arr, uint16_t psc);				   // 右轮电机
 void atim_tim8_cplm_pwm_set(uint16_t ccr1,uint16_t ccr2);
-void RightMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void RightMoterMove( double rduty_cycle);//, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
 void RightMoterStop(void);
-void car_move(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void car_move(double lduty_cycle, double rduty_cycle);//, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
 
 void MoterPedestal_pwm_chy_init(uint16_t arr, uint16_t psc);
 void MoterLift_pwm_chy_init(uint16_t arr, uint16_t psc);

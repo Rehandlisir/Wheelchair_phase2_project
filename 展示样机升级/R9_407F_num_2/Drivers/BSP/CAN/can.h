@@ -42,6 +42,13 @@ extern uint8_t CanLedCmdbufSend[8];
 #define LED_YELLOW 1
 #define LED_RED 2
 /**/
+typedef struct {
+    int8_t x_raw;       // 原始X值（8位有符号）
+    int8_t y_raw;       // 原始Y值（8位有符号）
+		uint8_t As5013ID;
+		
+} AS5013_Data;
+extern AS5013_Data as5013_data;
 extern uint8_t CanKeybufReceive[8];
 extern uint8_t CanLedCmdbufSend[8];
 extern uint8_t CanjoysticbufReceive[8];

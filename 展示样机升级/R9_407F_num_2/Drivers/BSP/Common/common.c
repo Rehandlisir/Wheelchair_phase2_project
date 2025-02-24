@@ -112,14 +112,14 @@ void lowpass_init(void)
 {
   initLowPassFilter(&lowpassl_speed,2,1000);
   initLowPassFilter(&lowpassr_speed,2,1000);
-  initLowPassFilter(&lowpassl_volatage,2,1000);
-  initLowPassFilter(&lowpassr_volatage,2,1000);
-  initLowPassFilter(&lowpassl_current,1,1000);
-  initLowPassFilter(&lowpassr_current,1,1000);
-  initLowPassFilter(&lowpassy_ADC,3,200);
-  initLowPassFilter(&lowpassx_ADC,3,200);
-  initLowPassFilter(&lowpass_lspeedTarget,10,200);
-  initLowPassFilter(&lowpass_rspeedTarget,10,200);
+  initLowPassFilter(&lowpassl_volatage,4,1000);
+  initLowPassFilter(&lowpassr_volatage,4,1000);
+  initLowPassFilter(&lowpassl_current,4,1000);
+  initLowPassFilter(&lowpassr_current,4,1000);
+  initLowPassFilter(&lowpassy_ADC,3,100);
+  initLowPassFilter(&lowpassx_ADC,3,100);
+  initLowPassFilter(&lowpass_lspeedTarget,5,100);
+  initLowPassFilter(&lowpass_rspeedTarget,5,100);
 }
 
 

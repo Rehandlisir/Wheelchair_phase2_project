@@ -4,7 +4,7 @@
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-14 13:34:51
+ * @LastEditTime : 2025-02-20 13:40:29
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/WheelSpeedMap.h"
@@ -28,7 +28,7 @@ static float pitch,roll,yaw;
 // #define JOYSTIC_AI 
 #define JOYSTIC_DI 
 #define REMOTE_DI
-
+#define JOYSTICDATA_AS5013
 /**
  * @description: 本地摇杆数据映射左右轮速方法
  * @param  set_Maximum_Strspeed ：最大直行速度  
@@ -88,11 +88,13 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
     /********************左右轮目标速度PID 给定***********************************************/
 	gl_speed_pid.SetPoint = Struc_ActuPra_Out.LN_Velocity;
 	gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
-	car_move(gl_motor_data.pwm,gr_motor_data.pwm,1,0,0);
 }
 
 void joystic_data_handle(void)
 {
+	
+	
+	#ifdef JOYSTICDATA_MLX90393
 	if (sqrt((mlxdata.xdata) * (mlxdata.xdata) + (mlxdata.ydata) * (mlxdata.ydata)) < DEAD_ZONE_R)
 	{
 		mlxdata.xdata = 0;
@@ -142,7 +144,41 @@ void joystic_data_handle(void)
 	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_ADC, mlxdata.ydata);
 
 	// printf("%d,%d\n\t",Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
-	
+	#endif
+	#ifdef JOYSTICDATA_AS5013
+	double distance = sqrt((as5013_data.x_raw ) * (as5013_data.x_raw ) + (as5013_data.y_raw ) * (as5013_data.y_raw ));
+	if (distance < DEAD_ZONE_R)
+	{
+		as5013_data.x_raw = 0;
+		as5013_data.y_raw = 0;
+		g_r9sys_data.r9pid_start =0;
+		g_r9sys_data.r9pid_stop =1;
+
+	}
+	else
+	{
+		g_r9sys_data.r9pid_start =1;
+		g_r9sys_data.r9pid_stop =0;
+		// 计算摇杆的距离
+		if (distance > JOYSTIC_R)
+		{
+			// 计算缩放因子，将点映射到圆周上
+			double scale = JOYSTIC_R / distance;
+			as5013_data.x_raw = (int8_t)(as5013_data.x_raw * scale);
+			as5013_data.y_raw = (int8_t)(as5013_data.y_raw * scale);
+		}
+	}
+
+	// as5013_data.x_raw= filterValue_int16(&filter_ADCX,  as5013_data.x_raw);
+	// as5013_data.y_raw = filterValue_int16(&filter_ADCY, as5013_data.y_raw);
+	Struc_ActuPra_Int.adcx = lowPassFilter(&lowpassx_ADC, as5013_data.x_raw);
+	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_ADC, as5013_data.y_raw);
+	Struc_ActuPra_Int.adcx = - Struc_ActuPra_Int.adcx;
+	Struc_ActuPra_Int.adcy = - Struc_ActuPra_Int.adcy;
+	// Struc_ActuPra_Int.adcx = filterValue_int16(&filter_ADCX, Struc_ActuPra_Int.adcx);
+	// Struc_ActuPra_Int.adcy = filterValue_int16(&filter_ADCY, Struc_ActuPra_Int.adcy);
+	printf("%d,%d\n\t",Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
+	#endif
 }
 void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
 {
@@ -163,17 +199,17 @@ void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
 	/*带入底盘逆运动学公式解算*/
 	Struc_ActuPra_Out.L_Velocity = lineVelocity + omega_velocity;
 	Struc_ActuPra_Out.R_Velocity = lineVelocity -omega_velocity;
-	/*测试代码*/
-	// gl_motor_data.pwm = (Struc_ActuPra_Out.L_Velocity) * KMPH_TO_Duty;
-	// gr_motor_data.pwm = (Struc_ActuPra_Out.R_Velocity) * KMPH_TO_Duty;
-	
 	/*左右目标轮线速度 转换为 电机目标转速*/
 	Struc_ActuPra_Out.LN_Velocity = Struc_ActuPra_Out.L_Velocity * velPlanIn.K_tran2RPM;
 	Struc_ActuPra_Out.RN_Velocity = Struc_ActuPra_Out.R_Velocity * velPlanIn.K_tran2RPM;
-	gl_speed_pid.SetPoint = lowPassFilter(&lowpassl_speed, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
-	gr_speed_pid.SetPoint = lowPassFilter(&lowpassr_speed, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
-	gl_speed_pid.SetPoint =Struc_ActuPra_Out.LN_Velocity;
-	gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
+	gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
+	gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
+	// gl_speed_pid.SetPoint =Struc_ActuPra_Out.LN_Velocity;
+	// gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
+	/*目标速度约束*/
+	gl_speed_pid.SetPoint = Value_limitf(-100.0,gl_speed_pid.SetPoint,100.0);
+	gr_speed_pid.SetPoint = Value_limitf(-100.0,gr_speed_pid.SetPoint,100.0);
+	
 }
 
 void Move_parameter_set(void)
@@ -184,7 +220,7 @@ void Move_parameter_set(void)
 	Struc_ActuPra_Int.set_minvelocitylevel = 1.0;
 	/*各方向最值速度*/
 	Struc_ActuPra_Int.set_Max_Forward = 6.0;
-	Struc_ActuPra_Int.set_Min_Forward = 1.0; // 1挡位对应的最大速度
+	Struc_ActuPra_Int.set_Min_Forward = 1.5; // 1挡位对应的最大速度
 	Struc_ActuPra_Int.set_Max_Reverse =2.0;
 	Struc_ActuPra_Int.set_Min_Reverse=1.0; // 1挡位对应的最大速度
 	Struc_ActuPra_Int.set_Max_Turn =1.5;
@@ -207,7 +243,7 @@ void Move_parameter_set(void)
 
 void moter_run(void)
 {
-	car_move(gl_motor_data.pwm, gr_motor_data.pwm, 1, 0, 0);
+	car_move(gl_motor_data.pwm, gr_motor_data.pwm);
 }
 
 /**
@@ -229,7 +265,7 @@ if (g_r9sys_data.r9pid_start) //摇杆在死区之外打开抱闸器
 /*锁住抱闸*/
 	{	
 		brakeflage++;
-		if(fabs(gl_motor_data.speed) <=2.0 && fabs(gr_motor_data.speed)<=2.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
+		if(fabs(gl_motor_data.speed) <=1.0 && fabs(gr_motor_data.speed)<=1.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
 		{ 
 				pid_init();
 				brake(1);

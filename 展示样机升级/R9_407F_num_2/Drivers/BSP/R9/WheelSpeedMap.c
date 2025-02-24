@@ -1,16 +1,17 @@
 /**
- * @FilePath     : /展示样机升级项目/R9_V2_2号机最新/R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
+ * @FilePath     : /展示样机升级/R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
  * @Description  :  
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-13 16:43:47
+ * @LastEditTime : 2025-02-21 09:25:54
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/WheelSpeedMap.h"
 #include "./BSP/R9/moterdriver.h"
 #include "./BSP/LEG_ KINEMATICS/LegRestKinematics.h"
 #include "./BSP/PID/pid.h"
+#include "./BSP/CAN/can.h"
 //本地 or 远程数据实参
 VELOCITY_POUT Struc_ActuPra_Out;
 VELOCITY_PIn  Struc_ActuPra_Int;
@@ -25,7 +26,7 @@ static float pitch,roll,yaw;
 // #define JOYSTIC_AI 
 #define JOYSTIC_DI 
 #define REMOTE_DI
-
+#define JOYSTICDATA_AS5013
 
 /**
  * @brief        : 摇杆数据预处理
@@ -33,6 +34,7 @@ static float pitch,roll,yaw;
  **/
 void joystic_data_handle(void)
 {
+	#ifdef JOYSTICDATA_MLX90393
 	if (sqrt((mlxdata.xdata) * (mlxdata.xdata) + (mlxdata.ydata) * (mlxdata.ydata)) < DEAD_ZONE_R)
 	{
 		mlxdata.xdata = 0;
@@ -57,8 +59,8 @@ void joystic_data_handle(void)
 		}
 	}
 	/*原始数据均值滤波处理*/
-	mlxdata.xdata = filterValue_int16(&filter_ADCX, mlxdata.xdata);
-	mlxdata.ydata = filterValue_int16(&filter_ADCY, mlxdata.ydata);
+	// mlxdata.xdata = filterValue_int16(&filter_ADCX, mlxdata.xdata);
+	// mlxdata.ydata = filterValue_int16(&filter_ADCY, mlxdata.ydata);
 	// if (mlxdata.ydata > 2810)
 	// {
 	// 	mlxdata.ydata = 2810;
@@ -82,6 +84,41 @@ void joystic_data_handle(void)
 	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_ADC, mlxdata.ydata);
 
 	// printf("%d,%d\n\t",Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
+	#endif
+	#ifdef JOYSTICDATA_AS5013
+	double distance = sqrt((as5013_data.x_raw ) * (as5013_data.x_raw ) + (as5013_data.y_raw ) * (as5013_data.y_raw ));
+	if (distance < DEAD_ZONE_R)
+	{
+		as5013_data.x_raw = 0;
+		as5013_data.y_raw = 0;
+		g_r9sys_data.r9pid_start =0;
+		g_r9sys_data.r9pid_stop =1;
+
+	}
+	else
+	{
+		g_r9sys_data.r9pid_start =1;
+		g_r9sys_data.r9pid_stop =0;
+		// 计算摇杆的距离
+		if (distance > JOYSTIC_R)
+		{
+			// 计算缩放因子，将点映射到圆周上
+			double scale = JOYSTIC_R / distance;
+			as5013_data.x_raw = (int8_t)(as5013_data.x_raw * scale);
+			as5013_data.y_raw = (int8_t)(as5013_data.y_raw * scale);
+		}
+	}
+
+	// as5013_data.x_raw= filterValue_int16(&filter_ADCX,  as5013_data.x_raw);
+	// as5013_data.y_raw = filterValue_int16(&filter_ADCY, as5013_data.y_raw);
+	Struc_ActuPra_Int.adcx = lowPassFilter(&lowpassx_ADC, as5013_data.x_raw);
+	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_ADC, as5013_data.y_raw);
+	Struc_ActuPra_Int.adcx = -Struc_ActuPra_Int.adcx;
+	Struc_ActuPra_Int.adcy = -Struc_ActuPra_Int.adcy;
+	Struc_ActuPra_Int.adcx = filterValue_int16(&filter_ADCX, Struc_ActuPra_Int.adcx);
+	Struc_ActuPra_Int.adcy = filterValue_int16(&filter_ADCY, Struc_ActuPra_Int.adcy);
+	// printf("%d,%d\n\t",Struc_ActuPra_Int.adcx ,Struc_ActuPra_Int.adcy);
+	#endif
 	
 }
 /**
@@ -126,10 +163,9 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
 	/*左右目标轮线速度 转换为 电机目标转速*/
 	Struc_ActuPra_Out.LN_Velocity = Struc_ActuPra_Out.L_Velocity * velPlanIn.K_tran2RPM;
 	Struc_ActuPra_Out.RN_Velocity = Struc_ActuPra_Out.R_Velocity * velPlanIn.K_tran2RPM;
-	// gl_speed_pid.SetPoint = lowPassFilter(&lowpassl_speed, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
-	// gr_speed_pid.SetPoint = lowPassFilter(&lowpassr_speed, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
-	gl_speed_pid.SetPoint =Struc_ActuPra_Out.LN_Velocity;
-	gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
+	gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
+	gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
+
 	
 	/*速度显示*/
 	Struc_ActuPra_Out.presentation_velocity = (fabs(Struc_ActuPra_Out.L_Velocity) + fabs(Struc_ActuPra_Out.R_Velocity))/2.0;
@@ -144,7 +180,7 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
 
 void moter_run(void)
 {
-	car_move(gl_motor_data.pwm, gr_motor_data.pwm, 1, 0, 0);
+	car_move(gl_motor_data.pwm, gr_motor_data.pwm);//, 1, 0, 0);
 }
 
 /**
@@ -162,12 +198,10 @@ void brake_excute(void)
 	}
 	else /* 如果摇杆落在死区之内 启动锁抱闸的逻辑*/
 	{	
-    if(fabs(gl_motor_data.speed) <=2.0 && fabs(gr_motor_data.speed)<=2.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
+    	if(fabs(gl_motor_data.speed) <=1.0 &&fabs(gr_motor_data.speed)<=1.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
 		{
 			pid_init();
 			BRAKE(0);
-			gl_motor_data.pwm = 0.0;
-			gr_motor_data.pwm = 0.0;
 		}
 	}
 }
@@ -333,5 +367,20 @@ void mapingExcute(void)
 	brake_excute();
 	velocity_maping(Struc_ActuPra_Int); /*速度规划 */
 	#endif
+}
+int8_t sign(float x)
+{
+	if (x>0)
+	{
+		return 1;
+	}
+	else if (x<0)
+	{
+		return -1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 

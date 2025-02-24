@@ -35,8 +35,17 @@
 /* CAN接收RX0中断使能 */
 #define CAN_RX0_INT_ENABLE              CAN1_RX0_IRQHandler
 
+
+typedef struct {
+    int8_t x_raw;       // 原始X值（8位有符号）
+    int8_t y_raw;       // 原始Y值（8位有符号）
+		uint8_t As5013ID;
+		
+} AS5013_Data;
+
 extern uint8_t CanKeybufReceive[8];
 extern uint8_t CanLedCmdbufSend[8];
+extern AS5013_Data as5013_data;
 #define CANMASTERID 0x01
 #define LED_GREEN 0
 #define LED_YELLOW 1

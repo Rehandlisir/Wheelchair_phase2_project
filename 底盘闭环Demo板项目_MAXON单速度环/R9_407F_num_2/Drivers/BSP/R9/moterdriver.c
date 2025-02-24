@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /MDK-ARMc:/Users/fu/Desktop/底盘Demo/Wheelchair_phase2_project/底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/moterdriver.c
+ * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/moterdriver.c
  * @Description  :
  * @Author       : lisir lisir@rehand.com
  * @Version      : 0.0.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-12-20 15:39:23
+ * @LastEditTime : 2025-02-14 15:04:25
  * @2024 by Rehand Medical Technology Co., LTD, All Rights Reserved.
  **/
 /**
@@ -125,74 +125,20 @@ void atim_tim1_cplm_pwm_set(uint16_t ccr1, uint16_t ccr2)
     ATIM_TIM1_CPLM_CH1_CCR1 = ccr1;                                                       /* 设置比较寄存器 */
     ATIM_TIM1_CPLM_CH2_CCR2 = ccr2;
 }
-void LeftMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse)
+void LeftMoterMove(double lduty_cycle)
 {
-    if (isleftright_reverse)
+    if (lduty_cycle > 0)
     {
-        if (isrmoter_reverse)
-        {
-            if (lduty_cycle > 0)
-            {
-                atim_tim8_cplm_pwm_set(0, (uint16_t)(lduty_cycle * 100)); // 向前
-            }
-            else if (lduty_cycle < 0)
-            {
-                atim_tim8_cplm_pwm_set((uint16_t)(-lduty_cycle * 100), 0); // 向后
-            }
-            else
-            {
-                RightMoterStop();
-            }
-        }
-        else
-        {
-            if (lduty_cycle > 0)
-            {
-                atim_tim8_cplm_pwm_set((uint16_t)(lduty_cycle * 100), 0); // 向前
-            }
-            else if (lduty_cycle < 0)
-            {
-                atim_tim8_cplm_pwm_set(0, (uint16_t)(-lduty_cycle * 100)); // 向后
-            }
-            else
-            {
-                RightMoterStop();
-            }
-        }
+        atim_tim1_cplm_pwm_set((uint16_t)(lduty_cycle * 100), 0); // 向 后
+    }
+    else if (lduty_cycle < 0)
+    {
+        atim_tim1_cplm_pwm_set(0, (uint16_t)(-lduty_cycle * 100)); // 向 前
     }
     else
     {
-        if (islmoter_reverse)
-        {
-            if (lduty_cycle > 0)
-            {
-                atim_tim1_cplm_pwm_set((uint16_t)(lduty_cycle * 100), 0); // 向 后
-            }
-            else if (lduty_cycle < 0)
-            {
-                atim_tim1_cplm_pwm_set(0, (uint16_t)(-lduty_cycle * 100)); // 向 前
-            }
-            else
-            {
-                LeftMoterStop();
-            }
-        }
-        else
-        {
-            if (lduty_cycle > 0)
-            {
-                atim_tim1_cplm_pwm_set(0, (uint16_t)(lduty_cycle * 100)); // 向 前
-            }
-            else if (lduty_cycle < 0)
-            {
-                atim_tim1_cplm_pwm_set((uint16_t)(-lduty_cycle * 100), 0); // 向 后
-            }
-            else
-            {
-                LeftMoterStop();
-            }
-        }
-    }
+        LeftMoterStop();
+    }    
 }
 
 void LeftMoterStop(void)
@@ -280,74 +226,22 @@ void atim_tim8_cplm_pwm_set(uint16_t ccr1, uint16_t ccr2)
     ATIM_TIM8_CPLM_CH2_CCR2 = ccr2;
 }
 
-void RightMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse)
+void RightMoterMove( double rduty_cycle) 
 {
-    if (isleftright_reverse)
+
+    if (rduty_cycle > 0)
     {
-        if (islmoter_reverse)
-        {
-            if (rduty_cycle > 0)
-            {
-                atim_tim1_cplm_pwm_set((uint16_t)(rduty_cycle * 100), 0); // 向 后
-            }
-            else if (rduty_cycle < 0)
-            {
-                atim_tim1_cplm_pwm_set(0, (uint16_t)(-rduty_cycle * 100)); // 向 前
-            }
-            else
-            {
-                LeftMoterStop();
-            }
-        }
-        else
-        {
-            if (rduty_cycle > 0)
-            {
-                atim_tim1_cplm_pwm_set(0, (uint16_t)(rduty_cycle * 100)); // 向 前
-            }
-            else if (rduty_cycle < 0)
-            {
-                atim_tim1_cplm_pwm_set((uint16_t)(-rduty_cycle * 100), 0); // 向 后
-            }
-            else
-            {
-                LeftMoterStop();
-            }
-        }
+        atim_tim8_cplm_pwm_set((uint16_t)(rduty_cycle * 100), 0); // 向前
+    }
+    else if (rduty_cycle < 0)
+    {
+        atim_tim8_cplm_pwm_set(0, (uint16_t)(-rduty_cycle * 100)); // 向后
     }
     else
     {
-        if (isrmoter_reverse)
-        {
-            if (rduty_cycle > 0)
-            {
-                atim_tim8_cplm_pwm_set(0, (uint16_t)(rduty_cycle * 100)); // 向前
-            }
-            else if (rduty_cycle < 0)
-            {
-                atim_tim8_cplm_pwm_set((uint16_t)(-rduty_cycle * 100), 0); // 向后
-            }
-            else
-            {
-                RightMoterStop();
-            }
-        }
-        else
-        {
-            if (rduty_cycle > 0)
-            {
-                atim_tim8_cplm_pwm_set((uint16_t)(rduty_cycle * 100), 0); // 向前
-            }
-            else if (rduty_cycle < 0)
-            {
-                atim_tim8_cplm_pwm_set(0, (uint16_t)(-rduty_cycle * 100)); // 向后
-            }
-            else
-            {
-                RightMoterStop();
-            }
-        }
+        RightMoterStop();
     }
+
 }
 void RightMoterStop(void)
 {
@@ -355,10 +249,10 @@ void RightMoterStop(void)
     // RIGHT_SOFTBRAKE(1);
 }
 
-void car_move(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse)
+void car_move(double lduty_cycle, double rduty_cycle)
 {
-    LeftMoterMove(lduty_cycle,rduty_cycle,islmoter_reverse,isrmoter_reverse,isleftright_reverse);
-    RightMoterMove(lduty_cycle,rduty_cycle,islmoter_reverse,isrmoter_reverse,isleftright_reverse);
+    LeftMoterMove(lduty_cycle);
+    RightMoterMove(rduty_cycle);
 }
 void MoterdriveInit(void)
 {

@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /展示样机升级项目/R9_V2_2号机最新/R9_407F_num_2/Drivers/BSP/CAN/can.c
+ * @FilePath     : /展示样机升级/R9_407F_num_2/Drivers/BSP/CAN/can.c
  * @Description  :  CAN
  * @Author       : lisir lisir@rehand.com
  * @Version      : 0.0.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-11 10:28:30
+ * @LastEditTime : 2025-02-20 13:44:16
  * @2024 by Rehand Medical Technology Co., LTD, All Rights Reserved.
 **/
 
@@ -16,6 +16,8 @@
 uint8_t CanKeybufReceive[8];
 uint8_t CanLedCmdbufSend[8];
 uint8_t CanjoysticbufReceive[8];
+AS5013_Data as5013_data;
+
 
 CAN_HandleTypeDef   g_canx_handler;     /* CANx句柄 */
 CAN_TxHeaderTypeDef g_canx_txheader;    /* 发送参数句柄 */
@@ -234,10 +236,16 @@ void Can_joystic_receive(void)
     static uint8_t comflage ;
 
     can_receive_msg(0x02, CanjoysticbufReceive);  /* CAN ID = 0x02, 接收数据查询 */
-
-    mlxdata.xdata = (int16_t)(CanjoysticbufReceive[1] << 8 | CanjoysticbufReceive[0]);
-    mlxdata.ydata = (int16_t)(CanjoysticbufReceive[3] << 8 | CanjoysticbufReceive[2]);
-    mlxdata.mlx90393_CAN_id = CanjoysticbufReceive[4];
+    /*接收数据还原*/
+    int8_t restored_joydata[8];
+    for (int i = 0; i < 8; i++) 
+    {
+        restored_joydata[i] = (int8_t)CanjoysticbufReceive[i];
+    }
+    as5013_data.x_raw = restored_joydata[0];
+    as5013_data.y_raw = restored_joydata[1];
+    as5013_data.As5013ID = restored_joydata[2];
+    
 }
 
 void CanCmdled(uint8_t cmd1,uint8_t cmd2,uint8_t cmd3,uint8_t cmd4,uint8_t cmd5)

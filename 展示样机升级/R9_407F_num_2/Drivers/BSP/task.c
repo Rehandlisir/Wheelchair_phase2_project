@@ -199,5 +199,5 @@ void Task_Comsdetect(void)
 void Task_R9DataScope(void)
 {
 	printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
-	gr_speed_pid.SetPoint,gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,gl_motor_data.pwm,Struc_ActuPra_Out.steering_angle);
+	gr_speed_pid.SetPoint,gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,gl_motor_data.pwm,gr_motor_data.pwm);
 }

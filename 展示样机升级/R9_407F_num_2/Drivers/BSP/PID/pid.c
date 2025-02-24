@@ -36,7 +36,7 @@ void pid_init(void)
     gl_current_pid.Integral = C_KI_L;      /* 积分常数 Integral Const */
     gl_current_pid.Derivative = C_KD_L;    /* 微分常数 Derivative Const */
 
-    // gl_motor_data.pwm =0.0;
+
 /*右轮*/
     /* 初始化速度环PID参数 */
     gr_speed_pid.SetPoint = 0;           /* 目标值 */
@@ -59,7 +59,9 @@ void pid_init(void)
     gr_current_pid.Proportion = C_KP_R;    /* 比例常数 Proportional Const */
     gr_current_pid.Integral = C_KI_R;      /* 积分常数 Integral Const */
     gr_current_pid.Derivative = C_KD_R;    /* 微分常数 Derivative Const */
-    // gr_motor_data.pwm =0.0;
+
+    gl_motor_data.pwm = 0.0;
+    gr_motor_data.pwm = 0.0;
 
 }
 

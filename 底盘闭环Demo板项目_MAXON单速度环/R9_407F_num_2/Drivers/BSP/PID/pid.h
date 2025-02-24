@@ -11,12 +11,12 @@
 #if INCR_LOCT_SELECT
 
     /* 增量式PID 左轮速度环参数相关宏 */
-    #define  S_KP_L      0.006250000f               /* P参数 0.007*/                 /* P参数 0.007*/
-    #define  S_KI_L      0.00000785f                   /* I参数 */
+    #define  S_KP_L      0.45f               /* P参数 0.007*/                 /* P参数 0.007*/
+    #define  S_KI_L      0.001f                   /* I参数 */
     #define  S_KD_L      0.0f                     /* D参数*/ 
     /* 增量式PID 右轮速度环参数相关宏 */
-    #define  S_KP_R     0.006250000f                  /* P参数 0.007*/
-    #define  S_KI_R     0.00000785f                  /* I参数 */
+    #define  S_KP_R     0.45f                  /* P参数 0.007*/
+    #define  S_KI_R     0.001f                  /* I参数 */
     #define  S_KD_R     0.0f                   /* D参数*/ 
     /*增量式PID左轮电流环PID参数相关宏*/
     #define  C_KP_L      0.03f             /* P参数 */
@@ -26,6 +26,8 @@
     #define  C_KP_R      0.03f             /* P参数 */
     #define  C_KI_R      0.000008f             /* I参数 */
     #define  C_KD_R      0.00000000f             /* D参数 */
+
+    
 #else
 
 /* 位置式PID参数相关宏 */
@@ -68,6 +70,8 @@ extern PID_TypeDef  gl_speed_pid;           /* 左轮速度环PID参数结构体 */
 extern PID_TypeDef  gl_current_pid;        /* 左轮电流环PID参数结构体 */
 extern PID_TypeDef  gr_speed_pid;           /* 右轮速度环PID参数结构体 */
 extern PID_TypeDef  gr_current_pid;        /* 右轮电流环PID参数结构体 */
+extern PID_TypeDef  gl_volatage_pid;           /* 左轮电压环PID参数结构体 */
+extern PID_TypeDef  gr_volatage_pid;           /* 右轮电压环PID参数结构体 */
 /******************************************************************************************/
 
 void pid_init(void);                 /* pid初始化 */

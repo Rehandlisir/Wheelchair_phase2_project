@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /展示样机升级项目/R9_V2_2号机最新/R9_407F_num_2/Drivers/BSP/API_Schedule.c
+ * @FilePath     : /展示样机升级/R9_407F_num_2/Drivers/BSP/API_Schedule.c
  * @Description  :  
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-12 11:32:21
+ * @LastEditTime : 2025-02-20 20:14:45
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "API_Schedule.h"
@@ -17,13 +17,13 @@ struct TaskStruct TaskST[] =
 	{
 //	 	{0, 1, 0, Task_linearactuatorDrive},
 		{0, 2, 0, Task_GetMlx90393},
-		{0, 5, 0, Task_Velocitymaping},
+		{0, 10, 0, Task_Velocitymaping},
 		{0,1,0,Task_Moter_Run},
 		{0, 1, 0, Task_GetADC_AllData},
 		{0, 4, 0,Task_KineCacu},
 		{0, 300, 0, Task_led_control},
 		{0, 2, 0, Task_ModbusSlaveExecute},
-	  {0, 120, 0, Task_ultrasonicreadExecute2},
+	    {0, 120, 0, Task_ultrasonicreadExecute2},
 		{0, 2, 0, Task_CanKeyRun},
 		{0, 100, 0, Task_ex_handl},
 		{0, 1, 0, Task_Comsdetect},

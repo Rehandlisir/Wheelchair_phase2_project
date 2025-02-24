@@ -108,8 +108,8 @@ extern MLX90393Data mlxdata;
 #define YADC_DIM_MIN -250.0  
 #define XADC_DIM_MAX 250.0  
 #define XADC_DIM_MIN -250.0  
-#define JOYSTIC_R 3000.0
-#define DEAD_ZONE_R 300.0
+#define JOYSTIC_R 120.0
+#define DEAD_ZONE_R 12.0
 
 void MLX90393_IIC_Init(void);                //��ʼ��MLX90393��IO��				 
 void MLX90393_Start(void);				//����MLX90393��ʼ�ź�

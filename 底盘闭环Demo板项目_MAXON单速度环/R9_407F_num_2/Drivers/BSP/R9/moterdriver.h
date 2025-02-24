@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /MDK-ARMc:/Users/fu/Desktop/底盘Demo/Wheelchair_phase2_project/底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/moterdriver.h
+ * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/moterdriver.h
  * @Description  :  Moter Drive Header
  * @Author       : lisir lisir@rehand.com
  * @Version      : 0.0.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2024-12-20 15:44:13
+ * @LastEditTime : 2025-02-14 15:01:19
  * @2024 by Rehand Medical Technology Co., LTD, All Rights Reserved.
 **/
 
@@ -96,20 +96,15 @@
 
 void MoterL_pwm_chy_init(uint16_t arr, uint16_t psc);				   // 左轮电机
 void atim_tim1_cplm_pwm_set(uint16_t ccr1,uint16_t ccr2);
-void LeftMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void LeftMoterMove(double lduty_cycle);
 void LeftMoterStop(void);
 
 void MoterR_pwm_chy_init(uint16_t arr, uint16_t psc);				   // 右轮电机
 void atim_tim8_cplm_pwm_set(uint16_t ccr1,uint16_t ccr2);
-void RightMoterMove(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void RightMoterMove(double rduty_cycle);
 void RightMoterStop(void);
-void car_move(double lduty_cycle, double rduty_cycle, uint8_t islmoter_reverse, uint8_t isrmoter_reverse, uint8_t isleftright_reverse);
+void car_move(double lduty_cycle, double rduty_cycle);
 
-void MoterPedestal_pwm_chy_init(uint16_t arr, uint16_t psc);
-void MoterLift_pwm_chy_init(uint16_t arr, uint16_t psc);
-void MoterLeg_pwm_chy_init(uint16_t arr, uint16_t psc);
-void MoterSupport_pwm_chy_init(uint16_t arr, uint16_t psc);
- 
 void MoterdriveInit(void);
 
 
