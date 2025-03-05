@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /底盘闭环Demo板项目_MAXON单速度环/R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
+ * @FilePath     : /R9_407F_num_2/Drivers/BSP/R9/WheelSpeedMap.c
  * @Description  :  
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-20 13:40:29
+ * @LastEditTime : 2025-03-05 10:32:33
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/WheelSpeedMap.h"
@@ -88,6 +88,7 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
     /********************左右轮目标速度PID 给定***********************************************/
 	gl_speed_pid.SetPoint = Struc_ActuPra_Out.LN_Velocity;
 	gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
+	
 }
 
 void joystic_data_handle(void)
@@ -177,7 +178,7 @@ void joystic_data_handle(void)
 	Struc_ActuPra_Int.adcy = - Struc_ActuPra_Int.adcy;
 	// Struc_ActuPra_Int.adcx = filterValue_int16(&filter_ADCX, Struc_ActuPra_Int.adcx);
 	// Struc_ActuPra_Int.adcy = filterValue_int16(&filter_ADCY, Struc_ActuPra_Int.adcy);
-	printf("%d,%d\n\t",Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
+	// printf("%d,%d\n\t",Struc_ActuPra_Int.adcx,Struc_ActuPra_Int.adcy);
 	#endif
 }
 void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
@@ -202,14 +203,14 @@ void Reverse_Kinemaping(VELOCITY_PIn velPlanIn)
 	/*左右目标轮线速度 转换为 电机目标转速*/
 	Struc_ActuPra_Out.LN_Velocity = Struc_ActuPra_Out.L_Velocity * velPlanIn.K_tran2RPM;
 	Struc_ActuPra_Out.RN_Velocity = Struc_ActuPra_Out.R_Velocity * velPlanIn.K_tran2RPM;
-	gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
-	gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
-	// gl_speed_pid.SetPoint =Struc_ActuPra_Out.LN_Velocity;
-	// gr_speed_pid.SetPoint = Struc_ActuPra_Out.RN_Velocity;
+	gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);
+	gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);
 	/*目标速度约束*/
 	gl_speed_pid.SetPoint = Value_limitf(-100.0,gl_speed_pid.SetPoint,100.0);
 	gr_speed_pid.SetPoint = Value_limitf(-100.0,gr_speed_pid.SetPoint,100.0);
-	
+
+	// gl_motor_data.pwm = Struc_ActuPra_Out.L_Velocity*KMPH_TO_Duty;
+	// gr_motor_data.pwm = Struc_ActuPra_Out.R_Velocity*KMPH_TO_Duty;
 }
 
 void Move_parameter_set(void)
@@ -223,12 +224,12 @@ void Move_parameter_set(void)
 	Struc_ActuPra_Int.set_Min_Forward = 1.5; // 1挡位对应的最大速度
 	Struc_ActuPra_Int.set_Max_Reverse =2.0;
 	Struc_ActuPra_Int.set_Min_Reverse=1.0; // 1挡位对应的最大速度
-	Struc_ActuPra_Int.set_Max_Turn =1.5;
+	Struc_ActuPra_Int.set_Max_Turn =1.2;
 	Struc_ActuPra_Int.set_Min_Turn =1.0;// 1挡位对应的最大速度	
 	Struc_ActuPra_Int.setMaxspeedInTurn = 0.15;
 	
 	/*实际设定挡位*/
-	Struc_ActuPra_Int.set_velocitylevelAct = 1.0;
+	Struc_ActuPra_Int.set_velocitylevelAct = 3.0;
 	/*实际设定挡位下的最大前行速度*/
 	Struc_ActuPra_Int.set_forwardAct = (Struc_ActuPra_Int.set_Max_Forward-Struc_ActuPra_Int.set_Min_Forward)/(Struc_ActuPra_Int.set_maxvelocitylevel-Struc_ActuPra_Int.set_minvelocitylevel)*
 	(Struc_ActuPra_Int.set_velocitylevelAct-Struc_ActuPra_Int.set_minvelocitylevel) + Struc_ActuPra_Int.set_Min_Forward;
@@ -264,14 +265,20 @@ if (g_r9sys_data.r9pid_start) //摇杆在死区之外打开抱闸器
 	else
 /*锁住抱闸*/
 	{	
-		brakeflage++;
+		// brakeflage++;
 		if(fabs(gl_motor_data.speed) <=1.0 && fabs(gr_motor_data.speed)<=1.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
 		{ 
 				pid_init();
 				brake(1);
+				gl_motor_data.pwm=0;
+				gr_motor_data.pwm=0;	
+				Struc_ActuPra_Out.LN_Velocity=0;
+				Struc_ActuPra_Out.RN_Velocity=0;
+				
 				gl_motor_data.brake_state = 1;
 				gr_motor_data.brake_state = 1;
 				brakeflage =0;
+				
 		}
 	}	
 }

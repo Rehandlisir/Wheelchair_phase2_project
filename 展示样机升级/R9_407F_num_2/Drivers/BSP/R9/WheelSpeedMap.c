@@ -4,7 +4,7 @@
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-21 09:25:54
+ * @LastEditTime : 2025-03-04 11:43:34
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "./BSP/R9/WheelSpeedMap.h"
@@ -12,6 +12,7 @@
 #include "./BSP/LEG_ KINEMATICS/LegRestKinematics.h"
 #include "./BSP/PID/pid.h"
 #include "./BSP/CAN/can.h"
+#include "./BSP/ADC/adc.h"
 //本地 or 远程数据实参
 VELOCITY_POUT Struc_ActuPra_Out;
 VELOCITY_PIn  Struc_ActuPra_Int;
@@ -109,14 +110,14 @@ void joystic_data_handle(void)
 		}
 	}
 
-	// as5013_data.x_raw= filterValue_int16(&filter_ADCX,  as5013_data.x_raw);
-	// as5013_data.y_raw = filterValue_int16(&filter_ADCY, as5013_data.y_raw);
+	as5013_data.x_raw= filterValue_int16(&filter_ADCX,  as5013_data.x_raw);
+	as5013_data.y_raw = filterValue_int16(&filter_ADCY, as5013_data.y_raw);
 	Struc_ActuPra_Int.adcx = lowPassFilter(&lowpassx_ADC, as5013_data.x_raw);
 	Struc_ActuPra_Int.adcy = lowPassFilter(&lowpassy_ADC, as5013_data.y_raw);
 	Struc_ActuPra_Int.adcx = -Struc_ActuPra_Int.adcx;
 	Struc_ActuPra_Int.adcy = -Struc_ActuPra_Int.adcy;
-	Struc_ActuPra_Int.adcx = filterValue_int16(&filter_ADCX, Struc_ActuPra_Int.adcx);
-	Struc_ActuPra_Int.adcy = filterValue_int16(&filter_ADCY, Struc_ActuPra_Int.adcy);
+	// Struc_ActuPra_Int.adcx = filterValue_int16(&filter_ADCX, Struc_ActuPra_Int.adcx);
+	// Struc_ActuPra_Int.adcy = filterValue_int16(&filter_ADCY, Struc_ActuPra_Int.adcy);
 	// printf("%d,%d\n\t",Struc_ActuPra_Int.adcx ,Struc_ActuPra_Int.adcy);
 	#endif
 	
@@ -163,23 +164,27 @@ void velocity_maping(VELOCITY_PIn velPlanIn)
 	/*左右目标轮线速度 转换为 电机目标转速*/
 	Struc_ActuPra_Out.LN_Velocity = Struc_ActuPra_Out.L_Velocity * velPlanIn.K_tran2RPM;
 	Struc_ActuPra_Out.RN_Velocity = Struc_ActuPra_Out.R_Velocity * velPlanIn.K_tran2RPM;
-	gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
-	gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
-
 	
-	/*速度显示*/
-	Struc_ActuPra_Out.presentation_velocity = (fabs(Struc_ActuPra_Out.L_Velocity) + fabs(Struc_ActuPra_Out.R_Velocity))/2.0;
-	Struc_ActuPra_Out.presentation_velocity = Value_limitf (0,Struc_ActuPra_Out.presentation_velocity ,velPlanIn.set_Maximum_Strspeed);
-	g_slaveReg[3] = (uint16_t)(Struc_ActuPra_Out.presentation_velocity * 100); // RK3588 接受车速信息KM/H
-	if (g_slaveReg[2] == 1) //充电时速度清0
-	{
-		g_slaveReg[3] =0;	
-	}
+	// gl_speed_pid.SetPoint = lowPassFilter(&lowpass_lspeedTarget, Struc_ActuPra_Out.LN_Velocity);//Struc_ActuPra_Out.LN_Velocity;
+	// gr_speed_pid.SetPoint = lowPassFilter(&lowpass_rspeedTarget, Struc_ActuPra_Out.RN_Velocity);//Struc_ActuPra_Out.RN_Velocity;
+	// /*速度显示*/
+	// Struc_ActuPra_Out.presentation_velocity = (fabs(Struc_ActuPra_Out.L_Velocity) + fabs(Struc_ActuPra_Out.R_Velocity))/2.0;
+	// Struc_ActuPra_Out.presentation_velocity = Value_limitf (0,Struc_ActuPra_Out.presentation_velocity ,velPlanIn.set_Maximum_Strspeed);
+	// g_slaveReg[3] = (uint16_t)(Struc_ActuPra_Out.presentation_velocity * 100); // RK3588 接受车速信息KM/H
+	// if (g_slaveReg[2] == 1) //充电时速度清0
+	// {
+	// 	g_slaveReg[3] =0;	
+	// }
+	moter_run();
 }
 
-
+/**
+ * @brief        : 电机运行
+ * @return        {*}无
+ **/
 void moter_run(void)
 {
+	
 	car_move(gl_motor_data.pwm, gr_motor_data.pwm);//, 1, 0, 0);
 }
 
@@ -198,10 +203,15 @@ void brake_excute(void)
 	}
 	else /* 如果摇杆落在死区之内 启动锁抱闸的逻辑*/
 	{	
-    	if(fabs(gl_motor_data.speed) <=1.0 &&fabs(gr_motor_data.speed)<=1.0) /*等待轮子完全停下来后 启动锁定抱闸器*/
+		brakeflage++;
+    	if(brakeflage>100)//((fabs(gl_motor_data.speed) <=1.0 &&fabs(gr_motor_data.speed)<=1.0)||brakeflage>100) /*等待轮子完全停下来后 启动锁定抱闸器*/
 		{
-			pid_init();
+			Struc_ActuPra_Out.LN_Velocity=0;
+			Struc_ActuPra_Out.RN_Velocity=0;
+			gl_motor_data.pwm=0;
+			gr_motor_data.pwm=0;
 			BRAKE(0);
+			brakeflage=0;
 		}
 	}
 }
@@ -212,7 +222,7 @@ void brake_excute(void)
 **/
 void VelocityLevelSet(void)
 { 
-		Struc_ActuPra_Int.K_tran2RPM = 15.0;
+		Struc_ActuPra_Int.K_tran2RPM =15.0;// 15.0;
 		/*挡位等级范围*/
 		Struc_ActuPra_Int.set_maxvelocitylevel = 5.0;
 		Struc_ActuPra_Int.set_minvelocitylevel = 1.0;
@@ -249,22 +259,22 @@ void VelocityLevelSet(void)
 					Struc_ActuPra_Int.setTurnAtMaxspeed = 0.15;	
 					break;
 		default:
-					Struc_ActuPra_Int.set_Max_Forward = 3.0;
-					Struc_ActuPra_Int.set_Min_Forward = 1.0; // 1挡位对应的最大速度
-					Struc_ActuPra_Int.set_Max_Reverse = 1.5;
+					Struc_ActuPra_Int.set_Max_Forward = 5.0;
+					Struc_ActuPra_Int.set_Min_Forward = 1.5; // 1挡位对应的最大速度
+					Struc_ActuPra_Int.set_Max_Reverse = 2.0;
 					Struc_ActuPra_Int.set_Min_Reverse = 1.0; // 1挡位对应的最大速度
-					Struc_ActuPra_Int.set_Max_Turn = 1.5;
-					Struc_ActuPra_Int.set_Min_Turn = 1.0; // 1挡位对应的最大速度
+					Struc_ActuPra_Int.set_Max_Turn = 2.0;
+					Struc_ActuPra_Int.set_Min_Turn = 1.5; // 1挡位对应的最大速度
 					Struc_ActuPra_Int.setMaxspeedInTurn = 0.15;
 					Struc_ActuPra_Int.setTurnAtMaxspeed = 0.15;	
 			break;
 	}
 	  /*实际设定挡位*/
-		Struc_ActuPra_Int.set_velocitylevelAct = 3.0;//g_slaveReg[73];
+		Struc_ActuPra_Int.set_velocitylevelAct = 4.0;//g_slaveReg[73];
 		// 远程连接 或者通讯失败 默认2档位
 		if(g_slaveReg[78]||comheartstate.com_state == Fail)
 		{
-			Struc_ActuPra_Int.set_velocitylevelAct = 3.0; 
+			Struc_ActuPra_Int.set_velocitylevelAct = 4.0; 
 		}
 			/*低速限制*/
 		if ((chairkinematicspra.y_o>50.8 && chairkinematicspra.y_o<152.4) ||
@@ -272,7 +282,7 @@ void VelocityLevelSet(void)
 		(fabs(chairkinematicspra.theta_x2X)>6.0 && fabs(chairkinematicspra.theta_x2X)<10.0) ||
 		adcdata.legangle_pos>1800)
 		 {
-			Struc_ActuPra_Int.set_velocitylevelAct = 3.0; 	
+			Struc_ActuPra_Int.set_velocitylevelAct = 4.0; 	
 		}
 		/*超低速限制*/
 		if (chairkinematicspra.y_o>152.4 ||
@@ -281,7 +291,7 @@ void VelocityLevelSet(void)
 		(chairkinematicspra.y_o>50.8 && fabs(chairkinematicspra.theta_x2X)>6.0 && fabs(chairkinematicspra.theta_x2X)<10.0)
 		)
 		{
-			Struc_ActuPra_Int.set_velocitylevelAct = 3.0; 
+			Struc_ActuPra_Int.set_velocitylevelAct = 4.0; 
 		}	
 		/*实际设定挡位下的最大前行速度*/
 		Struc_ActuPra_Int.set_forwardAct = (Struc_ActuPra_Int.set_Max_Forward - Struc_ActuPra_Int.set_Min_Forward) / (Struc_ActuPra_Int.set_maxvelocitylevel - Struc_ActuPra_Int.set_minvelocitylevel) *

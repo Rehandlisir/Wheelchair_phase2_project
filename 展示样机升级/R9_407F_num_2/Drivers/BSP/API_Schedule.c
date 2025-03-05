@@ -4,7 +4,7 @@
  * @Author       : lisir
  * @Version      : V1.1
  * @LastEditors  : error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
- * @LastEditTime : 2025-02-20 20:14:45
+ * @LastEditTime : 2025-03-04 10:02:45
  * @Copyright (c) 2024 by Rehand Medical Technology Co., LTD, All Rights Reserved. 
 **/
 #include "API_Schedule.h"
@@ -17,8 +17,8 @@ struct TaskStruct TaskST[] =
 	{
 //	 	{0, 1, 0, Task_linearactuatorDrive},
 		{0, 2, 0, Task_GetMlx90393},
-		{0, 10, 0, Task_Velocitymaping},
-		{0,1,0,Task_Moter_Run},
+		{0, 1, 0, Task_Velocitymaping},
+		// {0,1,0,Task_Moter_Run},
 		{0, 1, 0, Task_GetADC_AllData},
 		{0, 4, 0,Task_KineCacu},
 		{0, 300, 0, Task_led_control},

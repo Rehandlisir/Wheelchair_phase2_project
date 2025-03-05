@@ -18,7 +18,19 @@
 ADC_HandleTypeDef g_adc3_nch_dma_handle; /* 与DMA2关联的ADC句柄 */
 DMA_HandleTypeDef g_dma_nch_adc3_handle; /* 与ADC3关联的DMA句柄 */
 uint16_t g_adc_value[ADC3_CH_NUM * ADC3_COLL] = {0};      /* 存储ADC原始值 */
-uint16_t g_adc_val[ADC3_CH_NUM];                         /*ADC平均值存放数组*/
+ /*ADC平均值存放数组
+ g_adc_val[0]:ASH2_AD 
+ g_adc_val[1]:BSH1_DIFF_AD 
+ g_adc_val[2]:BSH2_DIFF_AD
+ g_adc_val[3]:ASH1_AD
+ g_adc_val[4]:10V_ADC
+ g_adc_val[5]:BAT_V_ADC
+ g_adc_val[6]:15V_ADC
+ g_adc_val[7]:ASH1_DIFF_AD
+ g_adc_val[8]:ASH2_DIFF_AD
+ g_adc_val[9]:BSH1_AD
+ g_adc_val[10]:BSH2_AD*/
+uint16_t g_adc_val[ADC3_CH_NUM];                        
 
 void adc_channel_set(ADC_HandleTypeDef *adc_handle, uint32_t ch, uint32_t rank, uint32_t stime)
 {

@@ -37,6 +37,7 @@ void Hard_devInit(void)
 	lowpass_init();
 	adc3_nch_dma_init();
 	pid_init();
+	ir_compensation_init();
 	// vSetUpMlx90393();
 }
 
@@ -75,6 +76,10 @@ void Task_R9DataScope(void)
 
 /*闭环采样数据 ：1 左轮规划速度 2 左轮实际速度  3左轮电枢电压  4 左轮电枢电流 
 5 右轮规划速度 6 右轮实际速度  7右轮电枢电压  8 右轮电枢电流  9 左轮占空比  10 右轮占空比*/
-printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_volatage_pid.SetPoint,gl_motor_data.volatage,gl_motor_data.current,\
-gr_speed_pid.SetPoint,gr_motor_data.speed,gr_volatage_pid.SetPoint,gr_motor_data.volatage,gr_motor_data.current);
+// printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_volatage_pid.SetPoint,gl_motor_data.volatage,gl_motor_data.current,\
+// gr_speed_pid.SetPoint,gr_motor_data.speed,gr_volatage_pid.SetPoint,gr_motor_data.volatage,gr_motor_data.current);
+printf("%f,%f,%f,%f,%f,%f,%d,%f,%f,%f\r\n",gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
+	gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,prote_Rmoter.state,prote_Rmoter.I_limit_current,Struc_ActuPra_Out.LN_Velocity,Struc_ActuPra_Out.RN_Velocity);
+
+
 }

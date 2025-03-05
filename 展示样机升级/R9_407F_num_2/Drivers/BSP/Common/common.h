@@ -30,7 +30,7 @@
 
 
 
-#define WINDOW_SIZE 100
+#define WINDOW_SIZE 10
 // 均值滤波器结构体
 typedef struct {
     float window_float[WINDOW_SIZE];
@@ -40,8 +40,8 @@ typedef struct {
 
 // 浮点型低通滤波器滤波器结构体
 typedef struct {
-    double alpha;  // 滤波系数
-    double output; // 滤波器输出
+    float alpha;  // 滤波系数
+    float output; // 滤波器输出
 } LowPassFilter;
 
 
@@ -69,10 +69,10 @@ extern LowPassFilter lowpass_rspeedTarget;
 int16_t Value_limit(int16_t min_value, int16_t current_value, int16_t max_value);
 float Value_limitf(float min_value, float current_value, float max_value);
 void average_init(AverageFilter *filter);
-void initLowPassFilter(LowPassFilter *filter, double cutoffFrequency, double samplingFrequency) ;
+void initLowPassFilter(LowPassFilter *filter, float cutoffFrequency, float samplingFrequency) ;
 float  filterValue_float(AverageFilter *filter, float input);
 int16_t filterValue_int16(AverageFilter *filter, int16_t input);
-double lowPassFilter(LowPassFilter *filter, double input) ;
+float lowPassFilter(LowPassFilter *filter, float input) ;
 void filterInit(void);
 void lowpass_init(void);
 

@@ -36,7 +36,7 @@ void average_init(AverageFilter *filter)
 }
 
 // 初始化低通滤波器
-void initLowPassFilter(LowPassFilter *filter, double cutoffFrequency, double samplingFrequency) 
+void initLowPassFilter(LowPassFilter *filter, float cutoffFrequency, float samplingFrequency) 
 {
     // 根据截止频率和采样频率计算滤波系数alpha
     filter->alpha = cutoffFrequency / (cutoffFrequency + samplingFrequency);
@@ -79,7 +79,7 @@ int16_t filterValue_int16(AverageFilter *filter, int16_t input)
   return average;
 }
 /*一介低通滤波器*/
-double lowPassFilter(LowPassFilter *filter, double input) 
+float lowPassFilter(LowPassFilter *filter, float input) 
 {
     // 滤波计算公式：output[n] = alpha * input[n] + (1 - alpha) * output[n-1]
     filter->output = filter->alpha * input + (1 - filter->alpha) * filter->output;
@@ -110,16 +110,16 @@ LowPassFilter lowpass_rspeedTarget;
 
 void lowpass_init(void)
 {
-  initLowPassFilter(&lowpassl_speed,2,1000);
-  initLowPassFilter(&lowpassr_speed,2,1000);
-  initLowPassFilter(&lowpassl_volatage,4,1000);
-  initLowPassFilter(&lowpassr_volatage,4,1000);
-  initLowPassFilter(&lowpassl_current,4,1000);
-  initLowPassFilter(&lowpassr_current,4,1000);
-  initLowPassFilter(&lowpassy_ADC,3,100);
-  initLowPassFilter(&lowpassx_ADC,3,100);
-  initLowPassFilter(&lowpass_lspeedTarget,5,100);
-  initLowPassFilter(&lowpass_rspeedTarget,5,100);
+  initLowPassFilter(&lowpassl_speed,5,1000);
+  initLowPassFilter(&lowpassr_speed,5,1000);
+  initLowPassFilter(&lowpassl_volatage,5,1000);
+  initLowPassFilter(&lowpassr_volatage,5,1000);
+  initLowPassFilter(&lowpassl_current,5,1000);
+  initLowPassFilter(&lowpassr_current,5,1000);
+  initLowPassFilter(&lowpassy_ADC,5,500);
+  initLowPassFilter(&lowpassx_ADC,5,500);
+  initLowPassFilter(&lowpass_lspeedTarget,5,500);
+  initLowPassFilter(&lowpass_rspeedTarget,5,500);
 }
 
 

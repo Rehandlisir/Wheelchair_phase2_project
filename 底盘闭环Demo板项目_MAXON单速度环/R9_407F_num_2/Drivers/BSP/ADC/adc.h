@@ -48,7 +48,7 @@ extern uint16_t  g_adc_val[ADC3_CH_NUM];
 #define ADC2BATTV            (254.0*3.3)/(4096.0*22.0) // 电池电压换算系数
 #define ADC2R9_10V           25.3/4096.0 // 10v电压换算系数
 #define ADC2R9_15V           (41.2*3.3)/(4096.0*8.2) // 15v电压换算系数
-#define MOTER_RA             0.08                  // 电机内阻                      
+#define MOTER_RA             0.086                  // 电机内阻                      
 #define MOTER_CE             0.1073298// 0.1073298V     // 捷和电机反电势系数
 
 

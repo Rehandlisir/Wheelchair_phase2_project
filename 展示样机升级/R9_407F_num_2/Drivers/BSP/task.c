@@ -38,6 +38,7 @@ void Hard_devInit(void)
 		filterInit();                    /*初始化滤波器*/
 //		vSetUpMlx90393();
 		g_slaveReg[0] = 0x68;//本机设备作为Modbus从机时的设备ID
+		ir_compensation_init();  // IR 补偿初始化
 		printf("Enter initialization\n");
 }
 
@@ -198,6 +199,11 @@ void Task_Comsdetect(void)
 
 void Task_R9DataScope(void)
 {
-	printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n\t",gl_speed_pid.SetPoint,gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
-	gr_speed_pid.SetPoint,gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,gl_motor_data.pwm,gr_motor_data.pwm);
+	//确保下位机通过printf函数发送格式化数据，例如
+	//printf("Temperature:36.5,Humidity:75%,Status:ON\r\n");
+	printf("%f,%f,%f,%f,%f,%f,%f,%f,%d,%f,%f,%f\r\n",gl_motor_data.speed,gl_motor_data.volatage,gl_motor_data.current,\
+	gr_motor_data.speed,gr_motor_data.volatage,gr_motor_data.current,gl_motor_data.pwm,gr_motor_data.pwm,prote_Rmoter.state,prote_Rmoter.I_limit_current,Struc_ActuPra_Out.LN_Velocity,Struc_ActuPra_Out.RN_Velocity);
+	
+	// printf("%f\r\n",g_r9sys_data.r9_battary_v);
+	// printf("%d\n",HAL_GetTick());
 }

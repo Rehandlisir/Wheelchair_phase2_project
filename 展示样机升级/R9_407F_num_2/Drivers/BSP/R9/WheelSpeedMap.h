@@ -24,7 +24,7 @@
 #define Diameter 0.354		 /* 轮子直径354mm  */
 #define MoterMaxrN 175.0	 /*输出轴额定转速 175PRM */
 #define KMPH_TO_RPM    15.0  /*1km/h 约 15RPM*/
-#define VelocityConst  7.3   /*电机速率常数 单位 RPM/V*/
+#define MAXON_Ke  0.1073298   /*电机速率常数 单位 V/RPM*/
 #define KMPH_TO_Voltage 2.055 /*V/KMPH*/
 #define KMPH_TO_Duty   0.087  /*1km/h 占空比约 8.56%*/
 
@@ -91,13 +91,13 @@ typedef struct /*??????????*/
 /* 电机参数结构体 */
 typedef struct 
 {
-  uint8_t state;          /*电机状态*/
   float current;          /*电机电流*/
   float volatage;         /*电机电压*/
+  float volatage_Ra;
   float power;            /*电机功率*/
   float speed;            /*电机实际速度*/
   float pwm;
-  float volatage_Ra;   /*内阻分压*/
+  uint8_t temperature;       // 实时温度(°C)
 } Motor_TypeDef;
 
 typedef struct 

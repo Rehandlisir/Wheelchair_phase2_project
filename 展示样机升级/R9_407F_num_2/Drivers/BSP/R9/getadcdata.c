@@ -6,6 +6,7 @@
 #include "./BSP/Common/common.h"
 #include "./BSP/R9/Slavemodbus.h"
 #include "./BSP/R9/moterdriver.h"
+#include "./BSP/R9/WheelSpeedMap.h"
 
 /****************************************************************************************************
 * @attention
@@ -131,6 +132,7 @@ void getadc1Data(void)
 			{	
 				// 待更新为 26.2V  对应采样电压 2.015384615384615 V   对应  2500
 				Batcacu_V =  0.0105 * adcdata.bat_v;
+				g_r9sys_data.r9_battary_v = Batcacu_V;
 				if (Batcacu_V >=26.0)
 				{
 					g_slaveReg[1] = 100;

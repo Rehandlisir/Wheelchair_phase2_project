@@ -79,8 +79,8 @@
 #define ADC2BATTV            (254.0*3.3)/(4096.0*22.0) // 电池电压换算系数
 #define ADC2R9_10V           25.3/4096.0 // 10v电压换算系数
 #define ADC2R9_15V           (41.2*3.3)/(4096.0*8.2) // 15v电压换算系数
-#define MOTER_RA             0.080                  // 实际0.08 取其 70% 电机内阻                      
-#define MOTER_CE             0.1073298// 0.1073298V     // 捷和电机反电势系数
+#define MOTER_RA             0.06                 // 实际0.08 取其 70% 电机内阻                      
+#define MOTER_CE             0.133// 0.1073298V     // 
 
 void adc_channel_set(ADC_HandleTypeDef *adc_handle, uint32_t ch, uint32_t rank, uint32_t stime);    /* ADC通道设置 */
 void adc1_nch_dma_init(uint32_t tmr);        /* ADC1多通道 DMA采集初始化 */

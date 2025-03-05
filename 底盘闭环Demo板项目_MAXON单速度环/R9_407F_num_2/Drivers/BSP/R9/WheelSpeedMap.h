@@ -25,6 +25,7 @@
 
 /*  MAXON电机参数 */
 #define Maxon_BEMF  0.1025    /*电机输出轴反电动势 0.1025V/RPM */
+#define KMPH_TO_Duty   0.087  /*1km/h 占空比约 8.56%*/
 
 #define MAX_XDATA 2810.0
 #define MIN_XDATA 2810.0
