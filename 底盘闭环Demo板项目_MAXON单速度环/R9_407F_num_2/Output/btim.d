@@ -90,3 +90,4 @@
 ..\..\output\btim.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/PID/pid.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\btim.o: ..\..\Drivers\./BSP/LED/led.h

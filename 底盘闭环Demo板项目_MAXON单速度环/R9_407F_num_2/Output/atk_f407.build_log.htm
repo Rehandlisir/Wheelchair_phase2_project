@@ -36,69 +36,49 @@ compiling WheelSpeedMap.c...
    
 ..\..\Drivers\./BSP/R9/mlx90393.h(99): warning:  #65-D: expected a ";"
   } MLX90393Data;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(51): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	if ((Struc_ActuPra_Out.steering_angle>=0.0 && Struc_ActuPra_Out.steering_angle<(PI-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))||
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(51): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	if ((Struc_ActuPra_Out.steering_angle>=0.0 && Struc_ActuPra_Out.steering_angle<(PI-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))||
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(52): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	(Struc_ActuPra_Out.steering_angle>=(2.0*PI-Struc_ActuPra_Int.Steering_Angle/180.0 *PI) && Struc_ActuPra_Out.steering_angle<=2*PI))
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(54): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		Struc_ActuPra_Out.L_Velocity = velPlanIn.k_forwardpra *velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA  * \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(55): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		(sin(Struc_ActuPra_Out.steering_angle-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI)) + \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(56): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		cos(Struc_ActuPra_Out.steering_angle-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))) /Struc_ActuPra_Int.K_revise ;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(60): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		Struc_ActuPra_Out.L_Velocity = velPlanIn.k_backpra *velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA  * \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(61): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		(sin(Struc_ActuPra_Out.steering_angle-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI)) + \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(62): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		cos(Struc_ActuPra_Out.steering_angle-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))) /Struc_ActuPra_Int.K_revise ;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(65): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      if((Struc_ActuPra_Out.steering_angle>=0 && Struc_ActuPra_Out.steering_angle<=Struc_ActuPra_Int.Steering_Angle/180.0 *PI)|| \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	(Struc_ActuPra_Out.steering_angle>=PI+Struc_ActuPra_Int.Steering_Angle/180.0 *PI && Struc_ActuPra_Out.steering_angle<=2.0 *PI) )
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(68): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		Struc_ActuPra_Out.R_Velocity = velPlanIn.k_backpra*velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA * \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(69): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		(sin(Struc_ActuPra_Out.steering_angle+(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI)) - \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(70): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		cos(Struc_ActuPra_Out.steering_angle+(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))) /Struc_ActuPra_Int.K_revise ;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(74): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		Struc_ActuPra_Out.R_Velocity = velPlanIn.k_forwardpra*velPlanIn.set_Maximum_Strspeed * Struc_ActuPra_Out.underpanVelocity/MAX_YDATA * \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(75): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		(sin(Struc_ActuPra_Out.steering_angle+(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI)) - \
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		cos(Struc_ActuPra_Out.steering_angle+(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))) /Struc_ActuPra_Int.K_revise;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(190): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		set_forwardActmax =velPlanIn.set_forwardAct/JOYSTIC_R *velPlanIn.adcy;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(195): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		set_reverseActmax =velPlanIn.set_reverseAct/JOYSTIC_R *abs(velPlanIn.adcy);
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(195): warning:  #223-D: function "abs" declared implicitly
-  		set_reverseActmax =velPlanIn.set_reverseAct/JOYSTIC_R *abs(velPlanIn.adcy);
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(198): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	set_turn_handlmax =velPlanIn.set_turnAct/JOYSTIC_R *abs(velPlanIn.adcx) ;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(198): warning:  #223-D: function "abs" declared implicitly
-  	set_turn_handlmax =velPlanIn.set_turnAct/JOYSTIC_R *abs(velPlanIn.adcx) ;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(295): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	Struc_ActuPra_Int.K_revise = sin(0.5*PI-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI))
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(296): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	+cos(0.5*PI-(PI/4.0-Struc_ActuPra_Int.Steering_Angle/180.0 *PI));
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(299): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	if(Struc_ActuPra_Int.set_Maximum_Strspeed ==1.0 )
-..\..\Drivers\BSP\R9\WheelSpeedMap.c(321): warning:  #1-D: last line of file ends without a newline
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(254): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		set_forwardActmax = velPlanIn.set_forwardAct / JOYSTIC_R * velPlanIn.adcy;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(255): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		lineVelocity = set_forwardActmax * velPlanIn.adcy / JOYSTIC_R; // sin(velPlanIn.adcy/JOYSTIC_R*PI/2.0);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(259): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		set_reverseActmax = velPlanIn.set_reverseAct / JOYSTIC_R * abs(velPlanIn.adcy);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(259): warning:  #223-D: function "abs" declared implicitly
+  		set_reverseActmax = velPlanIn.set_reverseAct / JOYSTIC_R * abs(velPlanIn.adcy);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(260): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		lineVelocity = set_reverseActmax * velPlanIn.adcy / JOYSTIC_R; // sin(velPlanIn.adcy/JOYSTIC_R*PI/2.0);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(262): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	set_turn_handlmax = velPlanIn.set_turnAct / JOYSTIC_R * abs(velPlanIn.adcx);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(262): warning:  #223-D: function "abs" declared implicitly
+  	set_turn_handlmax = velPlanIn.set_turnAct / JOYSTIC_R * abs(velPlanIn.adcx);
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(263): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	omega_velocity = set_turn_handlmax * velPlanIn.adcx / JOYSTIC_R; // sin(velPlanIn.adcx/JOYSTIC_R*PI/2.0); //转向
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(265): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	float handl_lineVelocity = lineVelocity * KMPH_TO_MPS;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(266): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	float handl_omega_velocity = omega_velocity * KMPH_TO_MPS;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(282): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	lineVelocity = ApplyLongitudinalConstraint(&handl_lineVelocity, &GEAR_CONSTRAINTS[Struc_ActuPra_Int.set_velocitylevelAct - 1], CONTROL_CYCLE_S) * MPS_TO_KMPH;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(283): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	omega_velocity = ApplyLateralConstraint(&handl_omega_velocity, &GEAR_CONSTRAINTS[Struc_ActuPra_Int.set_velocitylevelAct - 1], CONTROL_CYCLE_S) * MPS_TO_KMPH;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(374): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Struc_ActuPra_Int.K_revise = sin(0.5 * PI - (PI / 4.0 - Struc_ActuPra_Int.Steering_Angle / 180.0 * PI)) + cos(0.5 * PI - (PI / 4.0 - Struc_ActuPra_Int.Steering_Angle / 180.0 * PI));
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(374): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	Struc_ActuPra_Int.K_revise = sin(0.5 * PI - (PI / 4.0 - Struc_ActuPra_Int.Steering_Angle / 180.0 * PI)) + cos(0.5 * PI - (PI / 4.0 - Struc_ActuPra_Int.Steering_Angle / 180.0 * PI));
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(377): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if (Struc_ActuPra_Int.set_Maximum_Strspeed == 1.0)
+..\..\Drivers\BSP\R9\WheelSpeedMap.c(397): warning:  #1-D: last line of file ends without a newline
   }
 ..\..\Drivers\BSP\R9\WheelSpeedMap.c(27): warning:  #177-D: variable "pitch"  was declared but never referenced
-  static float pitch,roll,yaw;
+  static float pitch, roll, yaw;
 ..\..\Drivers\BSP\R9\WheelSpeedMap.c(27): warning:  #177-D: variable "roll"  was declared but never referenced
-  static float pitch,roll,yaw;
+  static float pitch, roll, yaw;
 ..\..\Drivers\BSP\R9\WheelSpeedMap.c(27): warning:  #177-D: variable "yaw"  was declared but never referenced
-  static float pitch,roll,yaw;
-..\..\Drivers\BSP\R9\WheelSpeedMap.c: 33 warnings, 0 errors
+  static float pitch, roll, yaw;
+..\..\Drivers\BSP\R9\WheelSpeedMap.c: 23 warnings, 0 errors
 linking...
-Program Size: Code=24276 RO-data=748 RW-data=128 ZI-data=5096  
+Program Size: Code=22808 RO-data=576 RW-data=140 ZI-data=6236  
 FromELF: creating hex file...
-"..\..\Output\atk_f407.axf" - 0 Error(s), 33 Warning(s).
+"..\..\Output\atk_f407.axf" - 0 Error(s), 23 Warning(s).
 
 <h2>Software Packages used:</h2>
 

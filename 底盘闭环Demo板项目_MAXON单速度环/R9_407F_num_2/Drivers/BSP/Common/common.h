@@ -30,7 +30,7 @@
  
  
  
- #define WINDOW_SIZE 100
+ #define WINDOW_SIZE 150
  // 均值滤波器结构体
  typedef struct {
 	 float window_float[WINDOW_SIZE];
