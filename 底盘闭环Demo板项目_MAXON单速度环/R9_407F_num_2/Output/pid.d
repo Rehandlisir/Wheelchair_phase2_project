@@ -86,3 +86,6 @@
 ..\..\output\pid.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
+..\..\output\pid.o: ..\..\Drivers\./BSP/TIMER/btim.h
+..\..\output\pid.o: ..\..\Drivers\./BSP/API_Schedule.h
+..\..\output\pid.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
