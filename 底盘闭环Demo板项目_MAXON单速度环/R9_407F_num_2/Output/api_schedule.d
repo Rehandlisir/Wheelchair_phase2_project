@@ -92,5 +92,5 @@
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/PID/pid.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/WDG/wdg.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\api_schedule.o: ..\..\Drivers\./BSP/WDG/wdg.h

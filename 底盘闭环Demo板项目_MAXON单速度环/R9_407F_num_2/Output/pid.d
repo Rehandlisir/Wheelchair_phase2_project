@@ -89,3 +89,5 @@
 ..\..\output\pid.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/API_Schedule.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
+..\..\output\pid.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\pid.o: ..\..\Drivers\./BSP/LED/led.h

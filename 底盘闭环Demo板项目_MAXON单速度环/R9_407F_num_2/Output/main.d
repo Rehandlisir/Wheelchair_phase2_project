@@ -92,5 +92,5 @@
 ..\..\output\main.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/PID/pid.h
-..\..\output\main.o: ..\..\Drivers\./BSP/WDG/wdg.h
 ..\..\output\main.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\main.o: ..\..\Drivers\./BSP/WDG/wdg.h

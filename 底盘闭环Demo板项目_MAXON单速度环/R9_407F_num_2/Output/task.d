@@ -92,5 +92,5 @@
 ..\..\output\task.o: ..\..\Drivers\./BSP/API_Schedule.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/PID/pid.h
-..\..\output\task.o: ..\..\Drivers\./BSP/WDG/wdg.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\task.o: ..\..\Drivers\./BSP/WDG/wdg.h
