@@ -91,3 +91,8 @@
 ..\..\output\wheelspeedmap.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/getadcdata.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/PID/pid.h
+..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/TIMER/btim.h
+..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/API_Schedule.h
+..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h
+..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/ADC/adc.h
+..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/LED/led.h
