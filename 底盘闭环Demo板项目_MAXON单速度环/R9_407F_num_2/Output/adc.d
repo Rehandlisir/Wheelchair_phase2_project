@@ -80,9 +80,4 @@
 ..\..\output\adc.o: ..\..\Drivers\./BSP/CAN/can.h
 ..\..\output\adc.o: ..\..\Drivers\./BSP/R9/getadcdata.h
 ..\..\output\adc.o: ..\..\Drivers\./BSP/Communicationheartbeat/Comheartbeat.h
-..\..\output\adc.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\adc.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\adc.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\adc.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\adc.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\adc.o: ..\..\Drivers\./BSP/Curve_planing/curve.h

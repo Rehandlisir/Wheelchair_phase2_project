@@ -82,11 +82,6 @@
 ..\..\output\task.o: ..\..\Drivers\./BSP/R9/moterdriver.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/CAN/can.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/R9/getadcdata.h
-..\..\output\task.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\task.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\task.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\task.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\task.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\task.o: ..\..\Drivers\./BSP/API_Schedule.h

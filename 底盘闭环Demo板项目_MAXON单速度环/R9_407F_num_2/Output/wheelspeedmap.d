@@ -79,11 +79,6 @@
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/CAN/can.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/getadcdata.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/Communicationheartbeat/Comheartbeat.h
-..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\./BSP/LEG_ KINEMATICS/LegRestKinematics.h
 ..\..\output\wheelspeedmap.o: ..\..\Drivers\CMSIS\DSP\Include\arm_math.h

@@ -491,11 +491,6 @@
               <FilePath>..\..\Drivers\BSP\CAN\can.c</FilePath>
             </File>
             <File>
-              <FileName>mlx90393.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Drivers\BSP\R9\mlx90393.c</FilePath>
-            </File>
-            <File>
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\BSP\PID\pid.c</FilePath>

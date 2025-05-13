@@ -80,11 +80,6 @@
 ..\..\output\pid.o: ..\..\Drivers\./SYSTEM/delay/delay.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/Common/common.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/R9/getadcdata.h
-..\..\output\pid.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\pid.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\pid.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\pid.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\pid.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\pid.o: ..\..\Drivers\./BSP/API_Schedule.h

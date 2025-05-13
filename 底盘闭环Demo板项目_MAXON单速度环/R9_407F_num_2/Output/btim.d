@@ -82,11 +82,6 @@
 ..\..\output\btim.o: ..\..\Drivers\./BSP/R9/moterdriver.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/CAN/can.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/R9/getadcdata.h
-..\..\output\btim.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\btim.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\btim.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\btim.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\btim.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/PID/pid.h
 ..\..\output\btim.o: ..\..\Drivers\./BSP/ADC/adc.h

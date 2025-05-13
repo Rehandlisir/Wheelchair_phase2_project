@@ -83,11 +83,6 @@
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/moterdriver.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/CAN/can.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/getadcdata.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/mpu6050.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/myiic.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/inv_mpu.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/inv_mpu_dmp_motion_driver.h
-..\..\output\api_schedule.o: ..\..\Drivers\./BSP/R9/mlx90393.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/Curve_planing/curve.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/TIMER/btim.h
 ..\..\output\api_schedule.o: ..\..\Drivers\./BSP/DAP21/hostdap21.h

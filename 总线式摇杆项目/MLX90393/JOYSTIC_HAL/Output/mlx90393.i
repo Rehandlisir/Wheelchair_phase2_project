@@ -37189,8 +37189,7 @@ void sys_msr_msp(uint32_t addr);
 
 
 
-
-# 67 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 66 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 
 
 
@@ -37231,8 +37230,8 @@ typedef  struct
 	int16_t ydata_source;
 	int16_t xdata;
 	int16_t ydata;
-  uint16_t x_offset ;
-  uint16_t y_offset ;
+  int16_t x_offset ;
+  int16_t y_offset ;
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
@@ -37252,7 +37251,7 @@ extern AverageFilter filter_mlx_ydata;
 
 extern MLX90393Data mlxdata;
 
-# 134 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 133 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 void MLX90393_SDA_OUT(void);
 void MLX90393_SDA_IN(void);
 void MLX90393_IIC_Init(void);                
@@ -37658,11 +37657,11 @@ void vSetUpMlx90393(void)
 
     delay_ms(2); 
 
-    if((0X801C != usReg0_3DataArr[0]) || (0xE180 != usReg0_3DataArr[1]) ||
+    if((0x003C != usReg0_3DataArr[0]) || (0xE180 != usReg0_3DataArr[1]) ||
             (0x01E5 != usReg0_3DataArr[2]))
     {
 		
-        vCmdMlxWriteRegAndWaite(0x00, 0X801C, 0x18, 0x04);   
+        vCmdMlxWriteRegAndWaite(0x00, 0x003C, 0x18, 0x04);   
         if(mlxdata.ucMlx90393ErroType)return;
         else
         {
@@ -37716,6 +37715,7 @@ void vInMeasurementNormal(void)
     bufy[1] = mlxdata.yhdata;	
 	mlxdata.xdata = ((*((uint8_t *)bufx+ 1)<< 8))| *(uint8_t *)bufx;
 	mlxdata.ydata = ((*((uint8_t *)bufy+ 1)<< 8))| *(uint8_t *)bufy;
+	
 	MLX90393_Stop();
 	
 	if(ucCheckReadMlxStatusErro(mlxdata.statusByte, 0))
@@ -37739,7 +37739,6 @@ void mlx_90393_offset(void)
 	
 	 mlxdata.ydata = mlxdata.ydata - mlxdata.y_offset;
 	
-
      
     mlxdata.xdata  = filterValue_int32(&filter_mlx_xdata, mlxdata.xdata);
     mlxdata.ydata = filterValue_int32(&filter_mlx_ydata, mlxdata.ydata);
@@ -37757,8 +37756,6 @@ void mlx_90393_offsetcacu(void)
 		vInMeasurementNormal();
 		mlxdata.x_offset = mlxdata.xdata; 
 		mlxdata.y_offset = mlxdata.ydata; 
-
-
 		delay_ms(2);
 		mlxdata.mlxcaculate_end = 0;
 

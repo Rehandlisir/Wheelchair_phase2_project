@@ -38306,8 +38306,7 @@ void btim_timx_int_init(uint16_t arr, uint16_t psc);
 
 
 
-
-# 67 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 66 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 
 
 
@@ -38348,8 +38347,8 @@ typedef  struct
 	int16_t ydata_source;
 	int16_t xdata;
 	int16_t ydata;
-  uint16_t x_offset ;
-  uint16_t y_offset ;
+  int16_t x_offset ;
+  int16_t y_offset ;
 	unsigned char ucMlx90393ErroType;
 	unsigned short usMlx90393StatusErroTimes;
   uint8_t mlxcommstatus;
@@ -38369,7 +38368,7 @@ extern AverageFilter filter_mlx_ydata;
 
 extern MLX90393Data mlxdata;
 
-# 134 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
+# 133 "..\\..\\Drivers\\./BSP/MLX90393/mlx90393.h"
 void MLX90393_SDA_OUT(void);
 void MLX90393_SDA_IN(void);
 void MLX90393_IIC_Init(void);                
